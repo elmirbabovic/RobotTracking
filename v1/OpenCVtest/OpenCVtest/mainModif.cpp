@@ -44,6 +44,14 @@ int V_MIN = 0;
 int V_MAX = 256;
 
 const string trackbarWindowName = "Trackbars";
+bool mouseIsDragging;//used for showing a rectangle on screen as user clicks and drags mouse
+bool mouseMove;
+bool rectangleSelected;
+cv::Point initialClickPoint, currentMousePoint; //keep track of initial point clicked and current position of mouse
+cv::Rect rectangleROI; //this is the ROI that the user has selected
+vector<int> H_ROI, S_ROI, V_ROI;// HSV values from the click/drag ROI region stored in separate vectors so that we can sort them easily
+
+bool calibrationMode;//used for showing debugging windows, trackbars etc.
 
 
 void on_trackbar(int, void*)
@@ -84,18 +92,137 @@ void createTrackbars() {
 
 }
 
+void clickAndDrag_Rectangle(int event, int x, int y, int flags, void* param) {
+	//only if calibration mode is true will we use the mouse to change HSV values
+	if (calibrationMode == true) {
+		//get handle to video feed passed in as "param" and cast as Mat pointer
+		Mat* videoFeed = (Mat*)param;
+
+		if (event == CV_EVENT_LBUTTONDOWN && mouseIsDragging == false)
+		{
+			//keep track of initial point clicked
+			initialClickPoint = cv::Point(x, y);
+			//user has begun dragging the mouse
+			mouseIsDragging = true;
+		}
+		/* user is dragging the mouse */
+		if (event == CV_EVENT_MOUSEMOVE && mouseIsDragging == true)
+		{
+			//keep track of current mouse point
+			currentMousePoint = cv::Point(x, y);
+			//user has moved the mouse while clicking and dragging
+			mouseMove = true;
+		}
+		/* user has released left button */
+		if (event == CV_EVENT_LBUTTONUP && mouseIsDragging == true)
+		{
+			//set rectangle ROI to the rectangle that the user has selected
+			rectangleROI = Rect(initialClickPoint, currentMousePoint);
+
+			//reset boolean variables
+			mouseIsDragging = false;
+			mouseMove = false;
+			rectangleSelected = true;
+		}
+
+		if (event == CV_EVENT_RBUTTONDOWN) {
+			//user has clicked right mouse button
+			//Reset HSV Values
+			H_MIN = 0;
+			S_MIN = 0;
+			V_MIN = 0;
+			H_MAX = 255;
+			S_MAX = 255;
+			V_MAX = 255;
+
+		}
+		if (event == CV_EVENT_MBUTTONDOWN) {
+
+			//user has clicked middle mouse button
+			//enter code here if needed.
+		}
+	}
+
+}
+void recordHSV_Values(cv::Mat frame, cv::Mat hsv_frame) {
+
+	//save HSV values for ROI that user selected to a vector
+	if (mouseMove == false && rectangleSelected == true) {
+
+		//clear previous vector values
+		if (H_ROI.size()>0) H_ROI.clear();
+		if (S_ROI.size()>0) S_ROI.clear();
+		if (V_ROI.size()>0)V_ROI.clear();
+		//if the rectangle has no width or height (user has only dragged a line) then we don't try to iterate over the width or height
+		if (rectangleROI.width<1 || rectangleROI.height<1) cout << "Please drag a rectangle, not a line" << endl;
+		else {
+			for (int i = rectangleROI.x; i<rectangleROI.x + rectangleROI.width; i++) {
+				//iterate through both x and y direction and save HSV values at each and every point
+				for (int j = rectangleROI.y; j<rectangleROI.y + rectangleROI.height; j++) {
+					//save HSV value at this point
+					H_ROI.push_back((int)hsv_frame.at<cv::Vec3b>(j, i)[0]);
+					S_ROI.push_back((int)hsv_frame.at<cv::Vec3b>(j, i)[1]);
+					V_ROI.push_back((int)hsv_frame.at<cv::Vec3b>(j, i)[2]);
+				}
+			}
+		}
+		//reset rectangleSelected so user can select another region if necessary
+		rectangleSelected = false;
+		//set min and max HSV values from min and max elements of each array
+
+		if (H_ROI.size()>0) {
+			//NOTE: min_element and max_element return iterators so we must dereference them with "*"
+			H_MIN = *std::min_element(H_ROI.begin(), H_ROI.end());
+			H_MAX = *std::max_element(H_ROI.begin(), H_ROI.end());
+			cout << "MIN 'H' VALUE: " << H_MIN << endl;
+			cout << "MAX 'H' VALUE: " << H_MAX << endl;
+		}
+		if (S_ROI.size()>0) {
+			S_MIN = *std::min_element(S_ROI.begin(), S_ROI.end());
+			S_MAX = *std::max_element(S_ROI.begin(), S_ROI.end());
+			cout << "MIN 'S' VALUE: " << S_MIN << endl;
+			cout << "MAX 'S' VALUE: " << S_MAX << endl;
+		}
+		if (V_ROI.size()>0) {
+			V_MIN = *std::min_element(V_ROI.begin(), V_ROI.end());
+			V_MAX = *std::max_element(V_ROI.begin(), V_ROI.end());
+			cout << "MIN 'V' VALUE: " << V_MIN << endl;
+			cout << "MAX 'V' VALUE: " << V_MAX << endl;
+		}
+
+	}
+
+	if (mouseMove == true) {
+		//if the mouse is held down, we will draw the click and dragged rectangle to the screen
+		rectangle(frame, initialClickPoint, cv::Point(currentMousePoint.x, currentMousePoint.y), cv::Scalar(0, 255, 0), 1, 8, 0);
+	}
+
+
+}
+
+
 int main(void) {
 
     cv::VideoCapture capVideo;
 
     cv::Mat imgFrame1;
     cv::Mat imgFrame2;
+	cv::Mat imgFrame2Copy;
 	Mat kopija;
 
 
     std::vector<Blob> blobs;
-
+	//za trackbar
 	createTrackbars();
+	//cv::namedWindow(windowName);
+	//set mouse callback function to be active on "Webcam Feed" window
+	//we pass the handle to our "frame" matrix so that we can draw a rectangle to it
+	//as the user clicks and drags the mouse
+	cv::setMouseCallback("imgFrame2Copy", clickAndDrag_Rectangle, &imgFrame2Copy);
+	//initiate mouse move and drag to false 
+	mouseIsDragging = false;
+	mouseMove = false;
+	rectangleSelected = false;
 
    // capVideo.open("768x576.avi");
 
@@ -129,7 +256,7 @@ int main(void) {
         std::vector<Blob> currentFrameBlobs;
 
         cv::Mat imgFrame1Copy = imgFrame1.clone();
-        cv::Mat imgFrame2Copy = imgFrame2.clone();
+        imgFrame2Copy = imgFrame2.clone();
 
         cv::Mat imgDifference;
         cv::Mat imgThresh;
