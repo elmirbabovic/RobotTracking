@@ -90,6 +90,8 @@ int main(void) {
 
     cv::Mat imgFrame1;
     cv::Mat imgFrame2;
+	Mat kopija;
+
 
     std::vector<Blob> blobs;
 
@@ -226,12 +228,16 @@ int main(void) {
 			
 			cv::inRange(src, cv::Scalar(H_MIN,S_MIN,V_MIN), cv::Scalar(H_MAX, S_MAX, V_MAX), novi);
 			cv::imshow("hsv", novi);
-			cv::Mat planes[3];
+			/*cv::Mat planes[3];
 			cv::split(src, planes);  // planes[2] is the red channel
 			cv::imshow("planes - 0", planes[0]);
 			cv::imshow("planes - 1", planes[1]);
 			cv::imshow("planes - 2", planes[2]);
-			//imgFrame2 = novi.clone();
+
+			kopija = imgFrame2.clone();*/
+			imgFrame2.setTo(Scalar(0, 0, 0), ~novi);
+    		//imgFrame2 = novi.clone();
+
       //  }
         //else {
           //  std::cout << "end of video\n";
@@ -371,10 +377,11 @@ void drawBlobInfoOnImage(std::vector<Blob> &blobs, cv::Mat &imgFrame2Copy) {
             cv::rectangle(imgFrame2Copy, blobs[i].currentBoundingRect, SCALAR_RED, 2);
 
             int intFontFace = CV_FONT_HERSHEY_SIMPLEX;
-            double dblFontScale = blobs[i].dblCurrentDiagonalSize / 60.0;
+            double dblFontScale = blobs[i].dblCurrentDiagonalSize / 100.0;
             int intFontThickness = (int)std::round(dblFontScale * 1.0);
 
-            cv::putText(imgFrame2Copy, std::to_string(i), blobs[i].centerPositions.back(), intFontFace, dblFontScale, SCALAR_GREEN, intFontThickness);
+	        vector<cv::Point>::value_type tacka = blobs[i].centerPositions.back();
+            cv::putText(imgFrame2Copy, std::to_string(i) + ": " + std::to_string(tacka.x) + "." + std::to_string(tacka.y), tacka, intFontFace, dblFontScale, SCALAR_GREEN, intFontThickness);
         }
     }
 }
