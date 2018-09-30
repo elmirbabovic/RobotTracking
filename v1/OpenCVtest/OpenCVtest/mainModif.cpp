@@ -51,7 +51,7 @@ cv::Point initialClickPoint, currentMousePoint; //keep track of initial point cl
 cv::Rect rectangleROI; //this is the ROI that the user has selected
 vector<int> H_ROI, S_ROI, V_ROI;// HSV values from the click/drag ROI region stored in separate vectors so that we can sort them easily
 
-bool calibrationMode;//used for showing debugging windows, trackbars etc.
+bool calibrationMode=true;//used for showing debugging windows, trackbars etc.
 
 
 void on_trackbar(int, void*)
@@ -93,8 +93,13 @@ void createTrackbars() {
 }
 
 void clickAndDrag_Rectangle(int event, int x, int y, int flags, void* param) {
+
+	//std::cout << "clickAndDrag_Rectangle: ... start " << std::endl;
 	//only if calibration mode is true will we use the mouse to change HSV values
 	if (calibrationMode == true) {
+
+		std::cout << "clickAndDrag_Rectangle: ... calibrationMode == true " << std::endl;
+
 		//get handle to video feed passed in as "param" and cast as Mat pointer
 		Mat* videoFeed = (Mat*)param;
 
@@ -208,17 +213,17 @@ int main(void) {
     cv::Mat imgFrame1;
     cv::Mat imgFrame2;
 	cv::Mat imgFrame2Copy;
-	Mat kopija;
+
 
 
     std::vector<Blob> blobs;
 	//za trackbar
 	createTrackbars();
-	//cv::namedWindow(windowName);
+	cv::namedWindow("original");
 	//set mouse callback function to be active on "Webcam Feed" window
 	//we pass the handle to our "frame" matrix so that we can draw a rectangle to it
 	//as the user clicks and drags the mouse
-	cv::setMouseCallback("imgFrame2Copy", clickAndDrag_Rectangle, &imgFrame2Copy);
+	cv::setMouseCallback("original", clickAndDrag_Rectangle, &imgFrame2);
 	//initiate mouse move and drag to false 
 	mouseIsDragging = false;
 	mouseMove = false;
@@ -355,6 +360,13 @@ int main(void) {
 			
 			cv::inRange(src, cv::Scalar(H_MIN,S_MIN,V_MIN), cv::Scalar(H_MAX, S_MAX, V_MAX), novi);
 			cv::imshow("hsv", novi);
+			cv::imshow("original", imgFrame2);
+
+
+			//set HSV values from user selected region
+			recordHSV_Values(imgFrame2, src);
+			createTrackbars();
+
 			/*cv::Mat planes[3];
 			cv::split(src, planes);  // planes[2] is the red channel
 			cv::imshow("planes - 0", planes[0]);
