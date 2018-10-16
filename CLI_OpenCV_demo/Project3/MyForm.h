@@ -4,6 +4,16 @@
 #include <opencv2/imgproc/imgproc_c.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs/imgcodecs_c.h>
+#include <opencv2/opencv.hpp>
+#include "opencv\highgui.h"
+#include "opencv\cv.h"
+#include <windows.h>
+#include "TackbarValues.h"
+#include "FileTools.h"
+
+
+
+
 
 namespace CLRSample {
 
@@ -19,6 +29,7 @@ namespace CLRSample {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
+		
 	public:
 		MyForm(void)
 		{
@@ -83,21 +94,24 @@ namespace CLRSample {
 
 		}
 #pragma endregion
+
+		const char* filename = "c:\\_robottracking\\slika1.jpg";
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-		cv_img = cvLoadImage("TestImg.bmp", CV_LOAD_IMAGE_COLOR);
+
+		cv_img = cvLoadImage(filename, CV_LOAD_IMAGE_COLOR);
 		if (cv_img == NULL) {
 			MessageBox::Show("cvLoadImage error !");
 			return;
 		}
 
-			cv::Mat matImage = cv::imread("TestImg.bmp", CV_LOAD_IMAGE_COLOR);
-			cv::cvtColor(matImage, matImage, CV_BGRA2RGBA);
+		//cv::Mat matImage = cv::imread("TestImg.bmp", CV_LOAD_IMAGE_COLOR);
+		//cv::cvtColor(matImage, matImage, CV_BGRA2RGBA);
 
-			auto hBitmap = CreateBitmap(matImage.cols, matImage.rows, 1, 32, matImage.data);
+		//auto hBitmap = cv::CreateBitmap(matImage.cols, matImage.rows, 1, 32, matImage.data);
+	
+		//Bitmap^ bm = Bitmap::FromHbitmap((IntPtr)hBitmap);
 		
-			Bitmap^ bm = Bitmap::FromHbitmap((IntPtr)hBitmap);
-		
-		//Bitmap ^ bm = gcnew Bitmap(cv_img->width, cv_img->height, cv_img->widthStep, Imaging::PixelFormat::Format24bppRgb, IntPtr(cv_img->imageData));
+		Bitmap ^ bm = gcnew Bitmap(cv_img->width, cv_img->height, cv_img->widthStep, Imaging::PixelFormat::Format24bppRgb, IntPtr(cv_img->imageData));
 		pictureBox1->Left = 0;
 		pictureBox1->Top = 0;
 		pictureBox1->Width = bm->Width;
@@ -123,6 +137,41 @@ namespace CLRSample {
 		cvCircle(cv_img, cvPoint(e->X, e->Y), r, CV_RGB(cr, cg, cb), CV_FILLED, 8);
 		Bitmap ^ bm = gcnew Bitmap(cv_img->width, cv_img->height, cv_img->widthStep, Imaging::PixelFormat::Format24bppRgb, IntPtr(cv_img->imageData));
 		pictureBox1->Image = bm;
+
+		cv::Mat matImage = cv::imread("c:\\_robottracking\\slika1.jpg", CV_LOAD_IMAGE_COLOR);
+			cv::imshow("opis", matImage);
+
+
+			using namespace std;
+			using namespace cv;
+
+			TrackbarValues bar;
+
+			//default capture width and height
+			const int FRAME_WIDTH = 640;
+			const int FRAME_HEIGHT = 480;
+			//max number of objects to be detected in frame
+			const int MAX_NUM_OBJECTS = 50;
+			//minimum and maximum object area
+
+			//names that will appear at the top of each window
+			const string winOriginal = "Original Image";
+			const string winHsvImage = "HSV Image";
+			const string winThreshholdedImage = "Thresholded Image";
+			const string winAfterMorphOper = "After Morphological Operations";
+			const string winTrackbars = "Trackbars";
+
+			bool calibrationMode;//used for showing debugging windows, trackbars etc.
+
+			bool mouseIsDragging;//used for showing a rectangle on screen as user clicks and drags mouse
+			bool mouseMove;
+			bool rectangleSelected;
+
+
+			cv::Point initialClickPoint, currentMousePoint; //keep track of initial point clicked and current position of mouse
+			cv::Rect rectangleROI; //this is the ROI that the user has selected
+			vector<int> H_ROI, S_ROI, V_ROI;// HSV values from the click/drag ROI region stored in separate vectors so that we can sort them easily
+
 	}
 	};
 }
