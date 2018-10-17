@@ -24,7 +24,10 @@
     <ClCompile Include="common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OpenCVtest.h">
+    <ClCompile Include="FormPictureBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyOpenCV.h">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,9 +44,15 @@
     <ClInclude Include="TackbarValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FormPictureBox.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPictureBox.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
   </ItemGroup>

@@ -6,13 +6,8 @@
 #include <opencv2/imgcodecs/imgcodecs_c.h>
 #include <opencv2/opencv.hpp>
 #include "opencv\highgui.h"
-#include "opencv\cv.h"
-#include <windows.h>
-#include "TackbarValues.h"
-#include "FileTools.h"
-
-
-
+#include "FormPictureBox.h"
+#include "MyOpenCV.h"
 
 
 namespace CLRSample {
@@ -50,14 +45,27 @@ namespace CLRSample {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::PictureBox^  pictureBox1;
+
+	private: System::Windows::Forms::Button^  BtnStartVizija;
+	private: System::Windows::Forms::Button^  BtnSendSerial;
+	private: System::Windows::Forms::TextBox^  txtSerial;
+	private: System::Windows::Forms::ComboBox^  cmbComPort;
+
+
+	private: System::IO::Ports::SerialPort^  serialPort1;
+	private: System::Windows::Forms::Button^  BtnShowMat;
+	private: System::Windows::Forms::Button^  BtnPictureBox;
+	private: System::Windows::Forms::Button^  btnStopVizija;
+	private: System::Windows::Forms::TextBox^  TxtOutputMessages;
+
+	private: System::ComponentModel::IContainer^  components;
 	protected:
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -66,112 +74,191 @@ namespace CLRSample {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->components = (gcnew System::ComponentModel::Container());
+			this->BtnStartVizija = (gcnew System::Windows::Forms::Button());
+			this->BtnSendSerial = (gcnew System::Windows::Forms::Button());
+			this->txtSerial = (gcnew System::Windows::Forms::TextBox());
+			this->cmbComPort = (gcnew System::Windows::Forms::ComboBox());
+			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
+			this->BtnShowMat = (gcnew System::Windows::Forms::Button());
+			this->BtnPictureBox = (gcnew System::Windows::Forms::Button());
+			this->btnStopVizija = (gcnew System::Windows::Forms::Button());
+			this->TxtOutputMessages = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
-			// pictureBox1
+			// BtnStartVizija
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(53, 79);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(100, 50);
-			this->pictureBox1->TabIndex = 0;
-			this->pictureBox1->TabStop = false;
-			this->pictureBox1->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::pictureBox1_MouseClick);
+			this->BtnStartVizija->Location = System::Drawing::Point(13, 13);
+			this->BtnStartVizija->Name = L"BtnStartVizija";
+			this->BtnStartVizija->Size = System::Drawing::Size(181, 23);
+			this->BtnStartVizija->TabIndex = 1;
+			this->BtnStartVizija->Text = L"Start vizija";
+			this->BtnStartVizija->UseVisualStyleBackColor = true;
+			this->BtnStartVizija->Click += gcnew System::EventHandler(this, &MyForm::BtnStartVizija_Click);
+			// 
+			// BtnSendSerial
+			// 
+			this->BtnSendSerial->Location = System::Drawing::Point(119, 288);
+			this->BtnSendSerial->Name = L"BtnSendSerial";
+			this->BtnSendSerial->Size = System::Drawing::Size(75, 23);
+			this->BtnSendSerial->TabIndex = 2;
+			this->BtnSendSerial->Text = L"Send Serial";
+			this->BtnSendSerial->UseVisualStyleBackColor = true;
+			this->BtnSendSerial->Click += gcnew System::EventHandler(this, &MyForm::BtnSendSerial_Click);
+			// 
+			// txtSerial
+			// 
+			this->txtSerial->Location = System::Drawing::Point(13, 176);
+			this->txtSerial->Multiline = true;
+			this->txtSerial->Name = L"txtSerial";
+			this->txtSerial->Size = System::Drawing::Size(181, 106);
+			this->txtSerial->TabIndex = 3;
+			this->txtSerial->Text = L"R1-X523-Y431";
+			// 
+			// cmbComPort
+			// 
+			this->cmbComPort->FormattingEnabled = true;
+			this->cmbComPort->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"COM1", L"COM2", L"COM3", L"COM4", L"COM5", L"COM6",
+					L"COM7"
+			});
+			this->cmbComPort->Location = System::Drawing::Point(13, 289);
+			this->cmbComPort->Name = L"cmbComPort";
+			this->cmbComPort->Size = System::Drawing::Size(100, 21);
+			this->cmbComPort->TabIndex = 4;
+			// 
+			// serialPort1
+			// 
+			this->serialPort1->BaudRate = 115200;
+			// 
+			// BtnShowMat
+			// 
+			this->BtnShowMat->Location = System::Drawing::Point(13, 71);
+			this->BtnShowMat->Name = L"BtnShowMat";
+			this->BtnShowMat->Size = System::Drawing::Size(182, 23);
+			this->BtnShowMat->TabIndex = 5;
+			this->BtnShowMat->Text = L"cv:ImgShow (cv::Mat)";
+			this->BtnShowMat->UseVisualStyleBackColor = true;
+			this->BtnShowMat->Click += gcnew System::EventHandler(this, &MyForm::BtnShowMat_Click);
+			// 
+			// BtnPictureBox
+			// 
+			this->BtnPictureBox->Location = System::Drawing::Point(13, 100);
+			this->BtnPictureBox->Name = L"BtnPictureBox";
+			this->BtnPictureBox->Size = System::Drawing::Size(182, 23);
+			this->BtnPictureBox->TabIndex = 6;
+			this->BtnPictureBox->Text = L"Forms::PictureBox (IplImage)";
+			this->BtnPictureBox->UseVisualStyleBackColor = true;
+			this->BtnPictureBox->Click += gcnew System::EventHandler(this, &MyForm::BtnPictureBox_Click);
+			// 
+			// btnStopVizija
+			// 
+			this->btnStopVizija->Location = System::Drawing::Point(13, 42);
+			this->btnStopVizija->Name = L"btnStopVizija";
+			this->btnStopVizija->Size = System::Drawing::Size(181, 23);
+			this->btnStopVizija->TabIndex = 7;
+			this->btnStopVizija->Text = L"Stop vizija";
+			this->btnStopVizija->UseVisualStyleBackColor = true;
+			this->btnStopVizija->Click += gcnew System::EventHandler(this, &MyForm::btnStopVizija_Click);
+			// 
+			// TxtOutputMessages
+			// 
+			this->TxtOutputMessages->Location = System::Drawing::Point(220, 13);
+			this->TxtOutputMessages->Multiline = true;
+			this->TxtOutputMessages->Name = L"TxtOutputMessages";
+			this->TxtOutputMessages->Size = System::Drawing::Size(599, 298);
+			this->TxtOutputMessages->TabIndex = 8;
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(282, 253);
-			this->Controls->Add(this->pictureBox1);
+			this->ClientSize = System::Drawing::Size(857, 357);
+			this->Controls->Add(this->TxtOutputMessages);
+			this->Controls->Add(this->btnStopVizija);
+			this->Controls->Add(this->BtnPictureBox);
+			this->Controls->Add(this->BtnShowMat);
+			this->Controls->Add(this->cmbComPort);
+			this->Controls->Add(this->txtSerial);
+			this->Controls->Add(this->BtnSendSerial);
+			this->Controls->Add(this->BtnStartVizija);
+			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm::MyForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 
-		const char* filename = "c:\\_robottracking\\slika1.jpg";
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-
-		cv_img = cvLoadImage(filename, CV_LOAD_IMAGE_COLOR);
-		if (cv_img == NULL) {
-			MessageBox::Show("cvLoadImage error !");
-			return;
-		}
-
-		//cv::Mat matImage = cv::imread("TestImg.bmp", CV_LOAD_IMAGE_COLOR);
-		//cv::cvtColor(matImage, matImage, CV_BGRA2RGBA);
-
-		//auto hBitmap = cv::CreateBitmap(matImage.cols, matImage.rows, 1, 32, matImage.data);
-	
-		//Bitmap^ bm = Bitmap::FromHbitmap((IntPtr)hBitmap);
-		
-		Bitmap ^ bm = gcnew Bitmap(cv_img->width, cv_img->height, cv_img->widthStep, Imaging::PixelFormat::Format24bppRgb, IntPtr(cv_img->imageData));
-		pictureBox1->Left = 0;
-		pictureBox1->Top = 0;
-		pictureBox1->Width = bm->Width;
-		pictureBox1->Height = bm->Height;
-		pictureBox1->Image = bm;
-		this->AutoSize = true;
-
-		srand(0);
+		PrintMessage("MyForm_Load");
 	}
-
-	 double urand() {
-		 return rand() / double(RAND_MAX);
-	 }
 
 
 	private: System::Void MyForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-		if (cv_img != NULL)
+		if (cv_img != nullptr)
 			cvReleaseImage(&cv_img);
-	}
-	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-		int r = int(50.0 + 100.0 * urand());
-		int cr = int(255.0 * urand()), cg = int(255.0 * urand()), cb = int(255.0 * urand());
-		cvCircle(cv_img, cvPoint(e->X, e->Y), r, CV_RGB(cr, cg, cb), CV_FILLED, 8);
-		Bitmap ^ bm = gcnew Bitmap(cv_img->width, cv_img->height, cv_img->widthStep, Imaging::PixelFormat::Format24bppRgb, IntPtr(cv_img->imageData));
-		pictureBox1->Image = bm;
 
+		if (myOpenCV != nullptr)
+		{
+			myOpenCV->VizijaStop();
+			PrintMessage("VizijaStop");
+		}
+	}
+	
+	private: System::Void BtnSendSerial_Click(System::Object^  sender, System::EventArgs^  e) {
+			try
+			{
+				this->serialPort1->PortName = cmbComPort->Text;
+				serialPort1->Open();
+				PrintMessage(cmbComPort->Text + " opened");
+
+				serialPort1->WriteLine(this->txtSerial->Text);
+				serialPort1->Close();
+				PrintMessage(cmbComPort->Text + " closed");
+			}
+			catch (System::Exception^ e)
+			{
+				PrintMessage("Greska: " + e->Message);
+			}
+	}
+
+	MyOpenCV* myOpenCV=nullptr;
+	
+	private: System::Void BtnStartVizija_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (myOpenCV == nullptr)
+		{
+			myOpenCV = new MyOpenCV;
+		}
+		PrintMessage("VizijaStart");
+		myOpenCV->VizijaStart();
+	}
+	private: System::Void BtnShowMat_Click(System::Object^  sender, System::EventArgs^  e) {
 		cv::Mat matImage = cv::imread("c:\\_robottracking\\slika1.jpg", CV_LOAD_IMAGE_COLOR);
-			cv::imshow("opis", matImage);
-
-
-			using namespace std;
-			using namespace cv;
-
-			TrackbarValues bar;
-
-			//default capture width and height
-			const int FRAME_WIDTH = 640;
-			const int FRAME_HEIGHT = 480;
-			//max number of objects to be detected in frame
-			const int MAX_NUM_OBJECTS = 50;
-			//minimum and maximum object area
-
-			//names that will appear at the top of each window
-			const string winOriginal = "Original Image";
-			const string winHsvImage = "HSV Image";
-			const string winThreshholdedImage = "Thresholded Image";
-			const string winAfterMorphOper = "After Morphological Operations";
-			const string winTrackbars = "Trackbars";
-
-			bool calibrationMode;//used for showing debugging windows, trackbars etc.
-
-			bool mouseIsDragging;//used for showing a rectangle on screen as user clicks and drags mouse
-			bool mouseMove;
-			bool rectangleSelected;
-
-
-			cv::Point initialClickPoint, currentMousePoint; //keep track of initial point clicked and current position of mouse
-			cv::Rect rectangleROI; //this is the ROI that the user has selected
-			vector<int> H_ROI, S_ROI, V_ROI;// HSV values from the click/drag ROI region stored in separate vectors so that we can sort them easily
-
+		cv::imshow("slika1.jpg", matImage);
+		PrintMessage("BtnShowMat Clicked");
 	}
+
+
+	private: System::Void BtnPictureBox_Click(System::Object^  sender, System::EventArgs^  e) {
+		FormPictureBox^ frm = gcnew FormPictureBox;
+		frm->Show();
+		PrintMessage("BtnPictureBox Clicked");
+	}
+	private: System::Void btnStopVizija_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (myOpenCV != nullptr)
+		{
+			myOpenCV->VizijaStop();
+			PrintMessage("Vizija stopped");
+		}
+	}
+
+	private: void PrintMessage(System::String^ msg)	{
+		TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+	}
+
 	};
 }

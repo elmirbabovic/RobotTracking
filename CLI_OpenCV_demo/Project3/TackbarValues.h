@@ -1,6 +1,6 @@
 #pragma once
 
-ref struct TrackbarValues
+ struct TrackbarValues
 {
 	int H_MIN = 0;
 	int H_MAX = 256;
