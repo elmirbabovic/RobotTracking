@@ -57,6 +57,10 @@ namespace CLRSample {
 	private: System::Windows::Forms::Button^  BtnPictureBox;
 	private: System::Windows::Forms::Button^  btnStopVizija;
 	private: System::Windows::Forms::TextBox^  TxtOutputMessages;
+	private: System::Windows::Forms::Button^  BtnVizijaPause;
+	private: System::Windows::Forms::Button^  BtnSeekVideo;
+
+	private: System::Windows::Forms::TrackBar^  trackBar1;
 
 	private: System::ComponentModel::IContainer^  components;
 	protected:
@@ -84,6 +88,10 @@ namespace CLRSample {
 			this->BtnPictureBox = (gcnew System::Windows::Forms::Button());
 			this->btnStopVizija = (gcnew System::Windows::Forms::Button());
 			this->TxtOutputMessages = (gcnew System::Windows::Forms::TextBox());
+			this->BtnVizijaPause = (gcnew System::Windows::Forms::Button());
+			this->BtnSeekVideo = (gcnew System::Windows::Forms::Button());
+			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// BtnStartVizija
@@ -98,7 +106,7 @@ namespace CLRSample {
 			// 
 			// BtnSendSerial
 			// 
-			this->BtnSendSerial->Location = System::Drawing::Point(119, 288);
+			this->BtnSendSerial->Location = System::Drawing::Point(118, 369);
 			this->BtnSendSerial->Name = L"BtnSendSerial";
 			this->BtnSendSerial->Size = System::Drawing::Size(75, 23);
 			this->BtnSendSerial->TabIndex = 2;
@@ -108,10 +116,10 @@ namespace CLRSample {
 			// 
 			// txtSerial
 			// 
-			this->txtSerial->Location = System::Drawing::Point(13, 176);
+			this->txtSerial->Location = System::Drawing::Point(12, 308);
 			this->txtSerial->Multiline = true;
 			this->txtSerial->Name = L"txtSerial";
-			this->txtSerial->Size = System::Drawing::Size(181, 106);
+			this->txtSerial->Size = System::Drawing::Size(181, 55);
 			this->txtSerial->TabIndex = 3;
 			this->txtSerial->Text = L"R1-X523-Y431";
 			// 
@@ -122,7 +130,7 @@ namespace CLRSample {
 				L"COM1", L"COM2", L"COM3", L"COM4", L"COM5", L"COM6",
 					L"COM7"
 			});
-			this->cmbComPort->Location = System::Drawing::Point(13, 289);
+			this->cmbComPort->Location = System::Drawing::Point(12, 370);
 			this->cmbComPort->Name = L"cmbComPort";
 			this->cmbComPort->Size = System::Drawing::Size(100, 21);
 			this->cmbComPort->TabIndex = 4;
@@ -169,11 +177,43 @@ namespace CLRSample {
 			this->TxtOutputMessages->Size = System::Drawing::Size(599, 298);
 			this->TxtOutputMessages->TabIndex = 8;
 			// 
+			// BtnVizijaPause
+			// 
+			this->BtnVizijaPause->Location = System::Drawing::Point(13, 130);
+			this->BtnVizijaPause->Name = L"BtnVizijaPause";
+			this->BtnVizijaPause->Size = System::Drawing::Size(181, 23);
+			this->BtnVizijaPause->TabIndex = 9;
+			this->BtnVizijaPause->Text = L"Vizija Pause / Resume";
+			this->BtnVizijaPause->UseVisualStyleBackColor = true;
+			this->BtnVizijaPause->Click += gcnew System::EventHandler(this, &MyForm::BtnVizijaPause_Click);
+			// 
+			// BtnSeekVideo
+			// 
+			this->BtnSeekVideo->Enabled = false;
+			this->BtnSeekVideo->Location = System::Drawing::Point(13, 210);
+			this->BtnSeekVideo->Name = L"BtnSeekVideo";
+			this->BtnSeekVideo->Size = System::Drawing::Size(180, 23);
+			this->BtnSeekVideo->TabIndex = 10;
+			this->BtnSeekVideo->Text = L"Seek video";
+			this->BtnSeekVideo->UseVisualStyleBackColor = true;
+			this->BtnSeekVideo->Click += gcnew System::EventHandler(this, &MyForm::BtnSeekVideo_Click);
+			// 
+			// trackBar1
+			// 
+			this->trackBar1->Location = System::Drawing::Point(13, 159);
+			this->trackBar1->Maximum = 100;
+			this->trackBar1->Name = L"trackBar1";
+			this->trackBar1->Size = System::Drawing::Size(180, 45);
+			this->trackBar1->TabIndex = 11;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 357);
+			this->ClientSize = System::Drawing::Size(857, 459);
+			this->Controls->Add(this->trackBar1);
+			this->Controls->Add(this->BtnSeekVideo);
+			this->Controls->Add(this->BtnVizijaPause);
 			this->Controls->Add(this->TxtOutputMessages);
 			this->Controls->Add(this->btnStopVizija);
 			this->Controls->Add(this->BtnPictureBox);
@@ -187,6 +227,7 @@ namespace CLRSample {
 			this->Text = L"MyForm";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm::MyForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -260,5 +301,21 @@ namespace CLRSample {
 		TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 	}
 
-	};
+	private: System::Void BtnVizijaPause_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (myOpenCV != nullptr)
+		{
+			myOpenCV->PauseToogle();
+			PrintMessage("Pause/Resume clicked");
+		}
+	}
+
+private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventArgs^  e) {
+	auto v = trackBar1->Value ;
+	if (myOpenCV != nullptr)
+	{
+		myOpenCV->GoTo(v / 100.0);
+		PrintMessage("Seek to " + System::Convert::ToString(v) + " %");
+	}
+}
+};
 }
