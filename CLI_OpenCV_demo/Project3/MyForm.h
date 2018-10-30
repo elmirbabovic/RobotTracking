@@ -179,6 +179,7 @@ namespace CLRSample {
 			this->TxtOutputMessages->Location = System::Drawing::Point(220, 13);
 			this->TxtOutputMessages->Multiline = true;
 			this->TxtOutputMessages->Name = L"TxtOutputMessages";
+			this->TxtOutputMessages->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->TxtOutputMessages->Size = System::Drawing::Size(599, 298);
 			this->TxtOutputMessages->TabIndex = 8;
 			// 
@@ -213,11 +214,11 @@ namespace CLRSample {
 			// 
 			// txtPositions
 			// 
-			this->txtPositions->Location = System::Drawing::Point(288, 333);
+			this->txtPositions->Location = System::Drawing::Point(220, 333);
 			this->txtPositions->Multiline = true;
 			this->txtPositions->Name = L"txtPositions";
 			this->txtPositions->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->txtPositions->Size = System::Drawing::Size(530, 90);
+			this->txtPositions->Size = System::Drawing::Size(598, 90);
 			this->txtPositions->TabIndex = 12;
 			// 
 			// timer1
@@ -319,6 +320,14 @@ namespace CLRSample {
 
 	private: void PrintMessage(System::String^ msg)	{
 		TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+		TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
+		TxtOutputMessages->ScrollToCaret();
+	}
+
+	private: void PrintIdentifikacijaMessage(System::String^ msg) {
+		txtPositions->Text += DateTime::Now.ToString("HH:mm:ss.fff") + " ---> " + msg + "\r\n";
+		txtPositions->SelectionStart = txtPositions->TextLength;
+		txtPositions->ScrollToCaret();
 	}
 
 	private: System::Void BtnVizijaPause_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -339,15 +348,9 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 }
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 	if (myOpenCV != nullptr)
-
-	txtPositions->Text += myOpenCV->dataLocations[0][0].ToString() + ": " + myOpenCV->dataLocations[1][0].ToString() + " - " + myOpenCV->dataLocations[2][0].ToString() + " - ";
-//	txtPositions->Text += myOpenCV->dataLocations[1][0].ToString() + " - ";
-//	txtPositions->Text += myOpenCV->dataLocations[2][0].ToString() + ":::";
-	if(txtPositions->TextLength>500)
 	{
-		txtPositions->Text = "";
+		PrintIdentifikacijaMessage(myOpenCV->dataLocations[0][0].ToString() + ": (" + myOpenCV->dataLocations[1][0].ToString() + ", " + myOpenCV->dataLocations[2][0].ToString() + ")");
 	}
-
 }
 };
 }

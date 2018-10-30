@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ATP">
+      <UniqueIdentifier>{2a7ea4de-5507-4954-8520-2c59e853776c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -47,9 +50,57 @@
     <ClInclude Include="FormPictureBox.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="ATP\Lista.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\ListaPov.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\ListaSekv.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\PrioritetniRed.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\PrioritetniRedHeap.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\PrioritetniRedPov.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\PrioritetniRedSekv.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\Red.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\RedPov.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\RedSekv.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\Stek.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\StekPov.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\StekSekv.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\UsporedbaGeneric.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
+    <ClInclude Include="ATP\Cvor.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPictureBox.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
   </ItemGroup>

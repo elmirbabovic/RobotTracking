@@ -39,4 +39,8 @@
   <ItemGroup>
     <Text Include="aa.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="libiconv.dll" />
+    <Image Include="libzbar64-0.lib" />
+  </ItemGroup>
 </Project>

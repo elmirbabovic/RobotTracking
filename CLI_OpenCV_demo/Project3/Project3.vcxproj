@@ -149,6 +149,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ATP\Cvor.h" />
+    <ClInclude Include="ATP\Lista.h" />
+    <ClInclude Include="ATP\ListaPov.h" />
+    <ClInclude Include="ATP\ListaSekv.h" />
+    <ClInclude Include="ATP\PrioritetniRed.h" />
+    <ClInclude Include="ATP\PrioritetniRedHeap.h" />
+    <ClInclude Include="ATP\PrioritetniRedPov.h" />
+    <ClInclude Include="ATP\PrioritetniRedSekv.h" />
+    <ClInclude Include="ATP\Red.h" />
+    <ClInclude Include="ATP\RedPov.h" />
+    <ClInclude Include="ATP\RedSekv.h" />
+    <ClInclude Include="ATP\Stek.h" />
+    <ClInclude Include="ATP\StekPov.h" />
+    <ClInclude Include="ATP\StekSekv.h" />
+    <ClInclude Include="ATP\UsporedbaGeneric.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="FileTools.h" />
     <ClInclude Include="FormPictureBox.h">
