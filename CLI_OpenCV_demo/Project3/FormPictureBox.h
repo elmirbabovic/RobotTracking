@@ -80,6 +80,7 @@ namespace CLRSample {
 			this->pictureBox1->Size = System::Drawing::Size(75, 43);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &FormPictureBox::pictureBox1_Click);
 			this->pictureBox1->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &FormPictureBox::pictureBox1_MouseClick);
 			// 
 			// FormPictureBox
@@ -146,5 +147,7 @@ namespace CLRSample {
 
 
 	}
-	};
+	private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+};
 }

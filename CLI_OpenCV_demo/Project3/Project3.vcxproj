@@ -160,6 +160,9 @@
     <ClInclude Include="TackbarValues.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormPictureBox.resx">
+      <DependentUpon>FormPictureBox.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
     </EmbeddedResource>

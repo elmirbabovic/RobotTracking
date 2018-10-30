@@ -10,6 +10,7 @@
 #include "MyOpenCV.h"
 
 
+
 namespace CLRSample {
 
 	using namespace System;
@@ -61,6 +62,8 @@ namespace CLRSample {
 	private: System::Windows::Forms::Button^  BtnSeekVideo;
 
 	private: System::Windows::Forms::TrackBar^  trackBar1;
+	private: System::Windows::Forms::TextBox^  txtPositions;
+	private: System::Windows::Forms::Timer^  timer1;
 
 	private: System::ComponentModel::IContainer^  components;
 	protected:
@@ -91,6 +94,8 @@ namespace CLRSample {
 			this->BtnVizijaPause = (gcnew System::Windows::Forms::Button());
 			this->BtnSeekVideo = (gcnew System::Windows::Forms::Button());
 			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
+			this->txtPositions = (gcnew System::Windows::Forms::TextBox());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -206,11 +211,26 @@ namespace CLRSample {
 			this->trackBar1->Size = System::Drawing::Size(180, 45);
 			this->trackBar1->TabIndex = 11;
 			// 
+			// txtPositions
+			// 
+			this->txtPositions->Location = System::Drawing::Point(288, 333);
+			this->txtPositions->Multiline = true;
+			this->txtPositions->Name = L"txtPositions";
+			this->txtPositions->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->txtPositions->Size = System::Drawing::Size(530, 90);
+			this->txtPositions->TabIndex = 12;
+			// 
+			// timer1
+			// 
+			this->timer1->Enabled = true;
+			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(857, 459);
+			this->Controls->Add(this->txtPositions);
 			this->Controls->Add(this->trackBar1);
 			this->Controls->Add(this->BtnSeekVideo);
 			this->Controls->Add(this->BtnVizijaPause);
@@ -316,6 +336,18 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 		myOpenCV->GoTo(v / 100.0);
 		PrintMessage("Seek to " + System::Convert::ToString(v) + " %");
 	}
+}
+private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (myOpenCV != nullptr)
+
+	txtPositions->Text += myOpenCV->dataLocations[0][0].ToString() + ": " + myOpenCV->dataLocations[1][0].ToString() + " - " + myOpenCV->dataLocations[2][0].ToString() + " - ";
+//	txtPositions->Text += myOpenCV->dataLocations[1][0].ToString() + " - ";
+//	txtPositions->Text += myOpenCV->dataLocations[2][0].ToString() + ":::";
+	if(txtPositions->TextLength>500)
+	{
+		txtPositions->Text = "";
+	}
+
 }
 };
 }
