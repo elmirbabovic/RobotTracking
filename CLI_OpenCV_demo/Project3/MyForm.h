@@ -347,9 +347,21 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 	}
 }
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	if (myOpenCV != nullptr)
+	if (myOpenCV == nullptr)
+		return;
+
+	Robot* robot = myOpenCV->robot_collector.GetRobot(1);
+	if (robot == nullptr)
+		return;
+
+	MyFramePoint* frame_point = robot->GetLastPozicija();
+	if (frame_point == nullptr)
 	{
-		PrintIdentifikacijaMessage(myOpenCV->dataLocations[0][0].ToString() + ": (" + myOpenCV->dataLocations[1][0].ToString() + ", " + myOpenCV->dataLocations[2][0].ToString() + ")");
+		PrintIdentifikacijaMessage("null");
+	}
+	else
+	{
+		PrintIdentifikacijaMessage(frame_point->framePozicija.ToString() + ": (" + frame_point->point.x + ", " + frame_point->point.y + ")");
 	}
 }
 };

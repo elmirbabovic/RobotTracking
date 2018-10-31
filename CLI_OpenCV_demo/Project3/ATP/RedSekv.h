@@ -86,14 +86,14 @@ public:
 
 	void print(string pre = "", string post = ", ")
 	{	
-		int i = pocetak;
+		/*int i = pocetak;
 		int b = 0;
 		while (b++ < brojac)
 		{
 			cout << pre << N[i++] << post;
 			if (i == max)
 				i = 0;
-		}
+		}*/
 	}
 
 	bool sadrzi(Tip value)
