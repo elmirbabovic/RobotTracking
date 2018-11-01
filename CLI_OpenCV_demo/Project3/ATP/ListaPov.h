@@ -37,6 +37,31 @@ public:
 	
 	}
 
+	void ForEach(function<void(Tip&)> p)
+	{
+		for (int i = 0; i<brojac; i++)
+		{
+			Tip& t = get(i);
+			p(t);
+		}
+	}
+	Lista<Tip>* Filter(function<bool(Tip&)> f)
+	{
+		ListaPov<Tip>* newK=new ListaPov<Tip>;
+
+		for (int i = 0; i < brojac; i++)
+		{
+			Tip &x = get(i);
+			if (f(x))
+			{
+				dodaj(newK, x);
+			}
+		}
+
+		return newK;
+	}
+
+
 	void dodaj(Tip v)
 	{
 		Cvor<Tip>* t = new Cvor<Tip>(v, prvi);

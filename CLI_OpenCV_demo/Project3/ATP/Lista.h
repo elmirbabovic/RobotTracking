@@ -26,6 +26,7 @@ public:
 	virtual bool sadrzi(Tip v) = 0;
 
 	virtual Tip* formirajNiz() = 0;
+
 };
 
 

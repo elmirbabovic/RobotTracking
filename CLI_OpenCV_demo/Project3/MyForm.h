@@ -65,6 +65,7 @@ namespace CLRSample {
 	private: System::Windows::Forms::TextBox^  txtPositions;
 	private: System::Windows::Forms::Timer^  timer1;
 
+
 	private: System::ComponentModel::IContainer^  components;
 	protected:
 
@@ -111,7 +112,7 @@ namespace CLRSample {
 			// 
 			// BtnSendSerial
 			// 
-			this->BtnSendSerial->Location = System::Drawing::Point(118, 369);
+			this->BtnSendSerial->Location = System::Drawing::Point(118, 300);
 			this->BtnSendSerial->Name = L"BtnSendSerial";
 			this->BtnSendSerial->Size = System::Drawing::Size(75, 23);
 			this->BtnSendSerial->TabIndex = 2;
@@ -121,7 +122,7 @@ namespace CLRSample {
 			// 
 			// txtSerial
 			// 
-			this->txtSerial->Location = System::Drawing::Point(12, 308);
+			this->txtSerial->Location = System::Drawing::Point(12, 239);
 			this->txtSerial->Multiline = true;
 			this->txtSerial->Name = L"txtSerial";
 			this->txtSerial->Size = System::Drawing::Size(181, 55);
@@ -135,7 +136,7 @@ namespace CLRSample {
 				L"COM1", L"COM2", L"COM3", L"COM4", L"COM5", L"COM6",
 					L"COM7"
 			});
-			this->cmbComPort->Location = System::Drawing::Point(12, 370);
+			this->cmbComPort->Location = System::Drawing::Point(12, 301);
 			this->cmbComPort->Name = L"cmbComPort";
 			this->cmbComPort->Size = System::Drawing::Size(100, 21);
 			this->cmbComPort->TabIndex = 4;
@@ -214,7 +215,7 @@ namespace CLRSample {
 			// 
 			// txtPositions
 			// 
-			this->txtPositions->Location = System::Drawing::Point(220, 333);
+			this->txtPositions->Location = System::Drawing::Point(221, 429);
 			this->txtPositions->Multiline = true;
 			this->txtPositions->Name = L"txtPositions";
 			this->txtPositions->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
@@ -230,7 +231,7 @@ namespace CLRSample {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 459);
+			this->ClientSize = System::Drawing::Size(857, 539);
 			this->Controls->Add(this->txtPositions);
 			this->Controls->Add(this->trackBar1);
 			this->Controls->Add(this->BtnSeekVideo);
@@ -354,7 +355,7 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	if (robot == nullptr)
 		return;
 
-	MyFramePoint* frame_point = robot->GetLastPozicija();
+	MyFramePoint* frame_point = robot->GetPozicijaNajnovija();
 	if (frame_point == nullptr)
 	{
 		PrintIdentifikacijaMessage("null");
