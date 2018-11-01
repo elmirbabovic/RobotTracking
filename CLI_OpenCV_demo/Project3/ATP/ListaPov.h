@@ -135,7 +135,7 @@ public:
 
 	Tip& get(int i)
 	{
-		if (i  > brojac)
+		if (i  >= brojac)
 			throw exception("indeks je veći od brojaca");
 
 		Cvor<Tip>* t = prvi;
