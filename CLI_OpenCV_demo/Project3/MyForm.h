@@ -355,14 +355,14 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	if (robot == nullptr)
 		return;
 
-	MyFramePoint* frame_point = robot->GetPozicijaNajnovija();
+	VersionItem<cv::Point>* frame_point = robot->GetPozicijaNajnovija();
 	if (frame_point == nullptr)
 	{
 		PrintIdentifikacijaMessage("null");
 	}
 	else
 	{
-		PrintIdentifikacijaMessage(frame_point->framePozicija.ToString() + ": (" + frame_point->point.x + ", " + frame_point->point.y + ")");
+		PrintIdentifikacijaMessage(frame_point->versionNumber.ToString() + ": (" + frame_point->item.x + ", " + frame_point->item.y + ")");
 	}
 }
 };

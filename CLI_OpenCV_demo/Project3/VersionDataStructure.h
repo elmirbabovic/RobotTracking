@@ -1,11 +1,13 @@
 #pragma once
-
+#include "ATP/Lista.h"
+#include "ATP/ListaPov.h"
 template <class Tip>
 struct VersionItem
 {
 	Tip item;
 	int versionNumber;
-	public VersionItem(int versionNumber, Tip item)
+
+	VersionItem(int versionNumber, Tip item)
 	{
 		this->item = item;
 		this->versionNumber = versionNumber;
@@ -19,33 +21,33 @@ private:
 	int max;
 	int brojac;
 	int kraj;
-	VersionItem<Tip>* N;
+	VersionItem<Tip>** N;
 
 public:
 	int getVelicina()
 	{
 		return brojac;
 	}
-	VersionItem<Tip> getOlderVersion(int p)
+	VersionItem<Tip>* getOlderVersion(int p)
 	{
 		if (brojac < p)
 			throw exception("brojac < p");
 
-		int fizicikaPozicija = (kraj-p + max) % max;
+		int fizicikaPozicija = (kraj - p + max) % max;
 		return N[fizicikaPozicija];
 	}
 
 	VersionDataStructure(int max = 10)
 	{
 		this->max = max;
-		brojac = 0;
-		kraj = 0;
-		N = new Tip[max];
+		this->brojac = 0;
+		this->kraj = 0;
+		this->N = new VersionItem<Tip>*[max];
 	}
 
-	VersionItem<Tip> GetNajnovija()
+	VersionItem<Tip>* GetNajnovija()
 	{
-		if (brojac == 0)
+		if (this->brojac == 0)
 			return nullptr;
 		return getOlderVersion(0);
 	}
@@ -53,15 +55,15 @@ public:
 	void dodaj(int versionNumber, Tip v)
 	{
 		kraj++;
-		
+
 		if (kraj == max)
 			kraj = 0;
-		N[kraj] = v;
-		
-			
+		N[kraj] = new VersionItem<Tip>(versionNumber, v);
+
+
 		brojac++;
-		if (brojac == max)
-			brojac = 0;
+		if (brojac > max)
+			brojac = max;
 	}
 
 
@@ -70,27 +72,15 @@ public:
 		return brojac == 0;
 	}
 
-	void print(string pre = "", string post = ", ")
+	Lista<VersionItem<Tip>>* ToLista()
 	{
-		/*int i = pocetak;
-		int b = 0;
-		while (b++ < brojac)
+		Lista<VersionItem<Tip>>* result = new ListaPov<VersionItem<Tip>>;
+		for (int i = 0; i < brojac; ++i)
 		{
-		cout << pre << N[i++] << post;
-		if (i == max)
-		i = 0;
-		}*/
-	}
-
-	bool sadrzi(Tip value)
-	{
-		for (int i = 0; i < brojac; i++)
-		{
-			if (IsJednako(N[i], value))
-				return true;
+			result->dodaj(getOlderVersion(0));
 		}
-		return false;
+		return result;
 	}
+
+
 };
-
-
