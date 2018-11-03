@@ -2,12 +2,12 @@
 #include "ATP/Lista.h"
 #include "ATP/ListaPov.h"
 template <class Tip>
-struct VersionItem
+struct MotionStep
 {
 	Tip item;
 	int versionNumber;
 
-	VersionItem(int versionNumber, Tip item)
+	MotionStep(int versionNumber, Tip item)
 	{
 		this->item = item;
 		this->versionNumber = versionNumber;
@@ -15,20 +15,20 @@ struct VersionItem
 };
 
 template <class Tip>
-class VersionDataStructure
+class SlidingPath
 {
 private:
 	int max;
 	int brojac;
 	int kraj;
-	VersionItem<Tip>** N;
+	MotionStep<Tip>** N;
 
 public:
 	int getVelicina()
 	{
 		return brojac;
 	}
-	VersionItem<Tip>* getOlderVersion(int p)
+	MotionStep<Tip>* getOlderVersion(int p)
 	{
 		if (brojac < p)
 			throw exception("brojac < p");
@@ -37,15 +37,15 @@ public:
 		return N[fizicikaPozicija];
 	}
 
-	VersionDataStructure(int max = 10)
+	SlidingPath(int max = 10)
 	{
 		this->max = max;
 		this->brojac = 0;
 		this->kraj = 0;
-		this->N = new VersionItem<Tip>*[max];
+		this->N = new MotionStep<Tip>*[max];
 	}
 
-	VersionItem<Tip>* GetNajnovija()
+	MotionStep<Tip>* GetNajnovija()
 	{
 		if (this->brojac == 0)
 			return nullptr;
@@ -58,7 +58,7 @@ public:
 
 		if (kraj == max)
 			kraj = 0;
-		N[kraj] = new VersionItem<Tip>(versionNumber, v);
+		N[kraj] = new MotionStep<Tip>(versionNumber, v);
 
 
 		brojac++;
@@ -72,9 +72,9 @@ public:
 		return brojac == 0;
 	}
 
-	Lista<VersionItem<Tip>>* ToLista()
+	Lista<MotionStep<Tip>>* ToLista()
 	{
-		Lista<VersionItem<Tip>>* result = new ListaPov<VersionItem<Tip>>;
+		Lista<MotionStep<Tip>>* result = new ListaPov<MotionStep<Tip>>;
 		for (int i = 0; i < brojac; ++i)
 		{
 			result->dodaj(getOlderVersion(0));

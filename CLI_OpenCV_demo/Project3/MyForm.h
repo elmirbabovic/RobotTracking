@@ -355,7 +355,7 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	if (robot == nullptr)
 		return;
 
-	VersionItem<cv::Point>* frame_point = robot->GetPozicijaNajnovija();
+	MotionStep<cv::Point>* frame_point = robot->GetPozicijaNajnovija();
 	if (frame_point == nullptr)
 	{
 		PrintIdentifikacijaMessage("null");

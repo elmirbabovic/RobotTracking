@@ -173,7 +173,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="TackbarValues.h" />
-    <ClInclude Include="VersionDataStructure.h" />
+    <ClInclude Include="SlidingPath.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormPictureBox.resx">

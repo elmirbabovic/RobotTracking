@@ -95,7 +95,7 @@
     <ClInclude Include="ATP\Cvor.h">
       <Filter>ATP</Filter>
     </ClInclude>
-    <ClInclude Include="VersionDataStructure.h">
+    <ClInclude Include="SlidingPath.h">
       <Filter>ATP</Filter>
     </ClInclude>
   </ItemGroup>
