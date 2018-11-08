@@ -1,34 +1,33 @@
 #pragma once
 #include "ATP/Lista.h"
 #include "ATP/ListaPov.h"
-template <class Tip>
 struct MotionStep
 {
-	Tip item;
+	cv::Point item;
 	int versionNumber;
 
-	MotionStep(int versionNumber, Tip item)
+	MotionStep(int versionNumber, cv::Point item)
 	{
 		this->item = item;
 		this->versionNumber = versionNumber;
 	}
 };
 
-template <class Tip>
+
 class SlidingPath
 {
 private:
 	int max;
 	int brojac;
 	int kraj;
-	MotionStep<Tip>** N;
+	MotionStep** N;
 
 public:
 	int getVelicina()
 	{
 		return brojac;
 	}
-	MotionStep<Tip>* getOlderVersion(int p)
+	MotionStep* getOlderVersion(int p)
 	{
 		if (brojac < p)
 			throw exception("brojac < p");
@@ -42,23 +41,23 @@ public:
 		this->max = max;
 		this->brojac = 0;
 		this->kraj = 0;
-		this->N = new MotionStep<Tip>*[max];
+		this->N = new MotionStep*[max];
 	}
 
-	MotionStep<Tip>* GetNajnovija()
+	MotionStep* GetNajnovija()
 	{
 		if (this->brojac == 0)
 			return nullptr;
 		return getOlderVersion(0);
 	}
 
-	void dodaj(int versionNumber, Tip v)
+	void dodaj(int versionNumber, cv::Point v)
 	{
 		kraj++;
 
 		if (kraj == max)
 			kraj = 0;
-		N[kraj] = new MotionStep<Tip>(versionNumber, v);
+		N[kraj] = new MotionStep(versionNumber, v);
 
 
 		brojac++;
@@ -72,9 +71,9 @@ public:
 		return brojac == 0;
 	}
 
-	Lista<MotionStep<Tip>>* ToLista()
+	Lista<MotionStep*>* ToLista()
 	{
-		Lista<MotionStep<Tip>>* result = new ListaPov<MotionStep<Tip>>;
+		Lista<MotionStep*>* result = new ListaPov<MotionStep*>;
 		for (int i = 0; i < brojac; ++i)
 		{
 			result->dodaj(getOlderVersion(0));

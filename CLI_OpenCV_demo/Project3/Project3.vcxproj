@@ -172,6 +172,7 @@
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="MyMath.h" />
     <ClInclude Include="TackbarValues.h" />
     <ClInclude Include="SlidingPath.h" />
   </ItemGroup>
