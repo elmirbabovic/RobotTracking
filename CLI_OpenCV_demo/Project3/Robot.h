@@ -4,10 +4,13 @@
 
 class Robot
 {
+
 	SlidingPath* historijaPozicija = new SlidingPath(30);
 
 	int id;
 public:
+	int lastDx = 0;
+	int lastDy = 0;
 	bool isRemoved = false;
 	float* ugaoPravcaKretanja = nullptr;
 
@@ -58,6 +61,8 @@ public:
 					if (ugaoPravcaKretanja == nullptr)
 						ugaoPravcaKretanja = new float;
 
+					lastDx = Dx;
+					lastDy = Dy;
 					*ugaoPravcaKretanja = IzracunajUgao(Dx, Dy);
 				}
 			}
