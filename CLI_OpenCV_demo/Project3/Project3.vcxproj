@@ -169,10 +169,12 @@
     <ClInclude Include="FormPictureBox.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Robot.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="MyMath.h" />
+    <ClInclude Include="RobotCollector.h" />
     <ClInclude Include="TackbarValues.h" />
     <ClInclude Include="SlidingPath.h" />
   </ItemGroup>
