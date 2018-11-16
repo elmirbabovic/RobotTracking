@@ -362,7 +362,7 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 	}
 	else
 	{
-		PrintIdentifikacijaMessage(frame_point->versionNumber.ToString() + ": (" + frame_point->item.x + ", " + frame_point->item.y + ")");
+		PrintIdentifikacijaMessage(frame_point->versionNumber.ToString() + ": (" + frame_point->point.x + ", " + frame_point->point.y + ")");
 	}
 }
 };

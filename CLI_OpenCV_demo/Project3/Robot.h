@@ -1,6 +1,7 @@
 #pragma once
 #include "MyMath.h"
 #include "SlidingPath.h"
+#include "Nullable.h"
 
 class Robot
 {
@@ -9,10 +10,8 @@ class Robot
 
 	int id;
 public:
-	int* lastDx = 0;
-	int* lastDy = 0;
 	bool isRemoved = false;
-	float* ugaoPravcaKretanja = nullptr;
+	NullableType<float> ugaoPravcaKretanja = nullptr;
 
 	float Udaljenost_OdTacke(cv::Point p)
 	{
@@ -20,7 +19,7 @@ public:
 		if (frame_point == nullptr)
 			return INT_MAX;
 
-		return Udaljenost_DvijeTacke(frame_point->item, p);
+		return Udaljenost_DvijeTacke(frame_point->point, p);
 	}
 
 	Robot(int id, int framePozicija, int x, int y)
@@ -44,32 +43,28 @@ public:
 		return frame_point;
 	}
 
+	NullableType<int> PravacDeltaY;
+	NullableType<int> PravacDeltaX;
+
 	void DodajPoziciju(int framePozicija, int x2, int y2)
 	{
 		cv::Point p2 = cv::Point(x2, y2);
-		if (historijaPozicija->getVelicina() > 2)
+		int min_steps_for_angle_calc = 10;
+		if (historijaPozicija->getVelicina() > min_steps_for_angle_calc)
 		{
-			MotionStep* mPoint1 = historijaPozicija->getOlderVersion(25);
+			MotionStep* mPoint1 = historijaPozicija->getOlderVersion(min_steps_for_angle_calc);
 
 			if (mPoint1 != nullptr)
 			{
-				cv::Point p1 = mPoint1->item;
+				cv::Point p1 = mPoint1->point;
 				int Dx = DeltaX(p1, p2);
 				int Dy = DeltaY(p1, p2);
-				if (abs(Dy) > 5 || abs(Dx) > 5)
+				float c = GetC(Dy, Dx);
+				if (c > 5)
 				{
-					if (ugaoPravcaKretanja == nullptr)
-						ugaoPravcaKretanja = new float;
-
-					if (lastDx == nullptr)
-						lastDx = new int;
-
-					if (lastDy == nullptr)
-						lastDy = new int;
-
-					*lastDx = Dx;
-					*lastDy = Dy;
-					*ugaoPravcaKretanja = IzracunajUgao(Dx, Dy);
+					this->PravacDeltaX = Dx;
+					this->PravacDeltaY = Dy;
+					ugaoPravcaKretanja = IzracunajUgao(Dx, Dy);
 				}
 			}
 

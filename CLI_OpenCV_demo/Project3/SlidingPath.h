@@ -3,12 +3,12 @@
 #include "ATP/ListaPov.h"
 struct MotionStep
 {
-	cv::Point item;
+	cv::Point point;
 	int versionNumber;
 
 	MotionStep(int versionNumber, cv::Point item)
 	{
-		this->item = item;
+		this->point = item;
 		this->versionNumber = versionNumber;
 	}
 };
