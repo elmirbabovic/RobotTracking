@@ -30,7 +30,7 @@ public:
 	MotionStep* getOlderVersion(int p)
 	{
 		if (brojac < p)
-			throw exception("brojac < p");
+			return nullptr;
 
 		int fizicikaPozicija = (kraj - p + max) % max;
 		return N[fizicikaPozicija];
@@ -42,6 +42,10 @@ public:
 		this->brojac = 0;
 		this->kraj = 0;
 		this->N = new MotionStep*[max];
+		for (int i = 0; i < max; ++i)
+		{
+			N[i] = nullptr;
+		}
 	}
 
 	MotionStep* GetNajnovija()

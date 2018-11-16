@@ -9,8 +9,8 @@ class Robot
 
 	int id;
 public:
-	int lastDx = 0;
-	int lastDy = 0;
+	int* lastDx = 0;
+	int* lastDy = 0;
 	bool isRemoved = false;
 	float* ugaoPravcaKretanja = nullptr;
 
@@ -49,20 +49,26 @@ public:
 		cv::Point p2 = cv::Point(x2, y2);
 		if (historijaPozicija->getVelicina() > 2)
 		{
-			MotionStep* mPoint1 = historijaPozicija->getOlderVersion(1);
+			MotionStep* mPoint1 = historijaPozicija->getOlderVersion(25);
 
 			if (mPoint1 != nullptr)
 			{
 				cv::Point p1 = mPoint1->item;
 				int Dx = DeltaX(p1, p2);
 				int Dy = DeltaY(p1, p2);
-				if (abs(Dy) > 2 || abs(Dx) > 2)
+				if (abs(Dy) > 5 || abs(Dx) > 5)
 				{
 					if (ugaoPravcaKretanja == nullptr)
 						ugaoPravcaKretanja = new float;
 
-					lastDx = Dx;
-					lastDy = Dy;
+					if (lastDx == nullptr)
+						lastDx = new int;
+
+					if (lastDy == nullptr)
+						lastDy = new int;
+
+					*lastDx = Dx;
+					*lastDy = Dy;
 					*ugaoPravcaKretanja = IzracunajUgao(Dx, Dy);
 				}
 			}
