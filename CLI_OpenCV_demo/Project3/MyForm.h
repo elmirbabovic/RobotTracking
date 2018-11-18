@@ -9,7 +9,10 @@
 #include "FormPictureBox.h"
 #include "MyOpenCV.h"
 
-
+#include <string>  
+#include <iostream>  
+using namespace System;
+using namespace std;
 
 namespace CLRSample {
 
@@ -62,8 +65,9 @@ namespace CLRSample {
 	private: System::Windows::Forms::Button^  BtnSeekVideo;
 
 	private: System::Windows::Forms::TrackBar^  trackBar1;
-	private: System::Windows::Forms::TextBox^  txtPositions;
 	private: System::Windows::Forms::Timer^  timer1;
+
+
 
 
 	private: System::ComponentModel::IContainer^  components;
@@ -95,7 +99,6 @@ namespace CLRSample {
 			this->BtnVizijaPause = (gcnew System::Windows::Forms::Button());
 			this->BtnSeekVideo = (gcnew System::Windows::Forms::Button());
 			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
-			this->txtPositions = (gcnew System::Windows::Forms::TextBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
@@ -213,26 +216,17 @@ namespace CLRSample {
 			this->trackBar1->Size = System::Drawing::Size(180, 45);
 			this->trackBar1->TabIndex = 11;
 			// 
-			// txtPositions
-			// 
-			this->txtPositions->Location = System::Drawing::Point(221, 429);
-			this->txtPositions->Multiline = true;
-			this->txtPositions->Name = L"txtPositions";
-			this->txtPositions->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->txtPositions->Size = System::Drawing::Size(598, 90);
-			this->txtPositions->TabIndex = 12;
-			// 
 			// timer1
 			// 
 			this->timer1->Enabled = true;
+			this->timer1->Interval = 200;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 539);
-			this->Controls->Add(this->txtPositions);
+			this->ClientSize = System::Drawing::Size(857, 344);
 			this->Controls->Add(this->trackBar1);
 			this->Controls->Add(this->BtnSeekVideo);
 			this->Controls->Add(this->BtnVizijaPause);
@@ -290,7 +284,9 @@ namespace CLRSample {
 	}
 
 	MyOpenCV* myOpenCV=nullptr;
+
 	
+
 	private: System::Void BtnStartVizija_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (myOpenCV == nullptr)
 		{
@@ -319,17 +315,17 @@ namespace CLRSample {
 		}
 	}
 
+		
+
+
+
 	private: void PrintMessage(System::String^ msg)	{
 		TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 		TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
 		TxtOutputMessages->ScrollToCaret();
 	}
 
-	private: void PrintIdentifikacijaMessage(System::String^ msg) {
-		txtPositions->Text += DateTime::Now.ToString("HH:mm:ss.fff") + " ---> " + msg + "\r\n";
-		txtPositions->SelectionStart = txtPositions->TextLength;
-		txtPositions->ScrollToCaret();
-	}
+	
 
 	private: System::Void BtnVizijaPause_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (myOpenCV != nullptr)
@@ -347,23 +343,16 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 		PrintMessage("Seek to " + System::Convert::ToString(v) + " %");
 	}
 }
-private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	if (myOpenCV == nullptr)
-		return;
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		if (myOpenCV == nullptr)
+			return;
 
-	Robot* robot = myOpenCV->robot_collector.GetRobot(1);
-	if (robot == nullptr)
-		return;
-
-	MotionStep* frame_point = robot->GetPozicijaNajnovija();
-	if (frame_point == nullptr)
-	{
-		PrintIdentifikacijaMessage("null");
+		if (!myOpenCV->printer->isPrazan())
+		{
+			string s = myOpenCV->printer->ukloni();
+			System::String^ ms = gcnew System::String(s.c_str());
+			PrintMessage(ms);
+		}
 	}
-	else
-	{
-		PrintIdentifikacijaMessage(frame_point->versionNumber.ToString() + ": (" + frame_point->point.x + ", " + frame_point->point.y + ")");
-	}
-}
 };
 }

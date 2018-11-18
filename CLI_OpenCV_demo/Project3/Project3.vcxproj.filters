@@ -110,6 +110,9 @@
     <ClInclude Include="Nullable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CliHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">

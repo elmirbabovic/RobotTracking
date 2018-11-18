@@ -8,7 +8,6 @@ class RobotCollector
 private:
 	Lista<Robot*>* roboti = new ListaSekv<Robot*>;
 
-	int maxDisplacement = 20;
 public:
 
 	int Count()
@@ -51,7 +50,7 @@ public:
 		return nullptr;
 	}
 
-	Robot* Find_NajbliziRobot(int x, int y)
+	Robot* Find_NajbliziRobot(int x, int y, int maxDisplacement)
 	{
 		float minUdaljenost = INT_MAX;
 		Robot* minRobot = nullptr;
@@ -67,7 +66,7 @@ public:
 				minRobot = currentRobot;
 			}
 		}
-		if (minUdaljenost < this->maxDisplacement)
+		if (minUdaljenost < maxDisplacement)
 		{
 			return minRobot;
 		}
