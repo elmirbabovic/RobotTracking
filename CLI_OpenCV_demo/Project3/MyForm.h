@@ -261,7 +261,7 @@ namespace CLRSample {
 
 		if (myOpenCV != nullptr)
 		{
-			myOpenCV->VizijaStop();
+			myOpenCV->VisionStop();
 			PrintMessage("VizijaStop");
 		}
 	}
@@ -293,7 +293,7 @@ namespace CLRSample {
 			myOpenCV = new MyOpenCV;
 		}
 		PrintMessage("VizijaStart");
-		myOpenCV->VizijaStart();
+		myOpenCV->VisionStart();
 	}
 	private: System::Void BtnShowMat_Click(System::Object^  sender, System::EventArgs^  e) {
 		cv::Mat matImage = cv::imread("c:\\_robottracking\\slika1.jpg", CV_LOAD_IMAGE_COLOR);
@@ -310,7 +310,7 @@ namespace CLRSample {
 	private: System::Void btnStopVizija_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (myOpenCV != nullptr)
 		{
-			myOpenCV->VizijaStop();
+			myOpenCV->VisionStop();
 			PrintMessage("Vizija stopped");
 		}
 	}

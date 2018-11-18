@@ -31,11 +31,11 @@ public:
 		}
 	}
 
-	void DodajRobota(int framePozicija, int pocetno_x, int pocetno_y)
+	void DodajRobota(int framePozicija, int pocetno_x, int pocetno_y, cv::Scalar color)
 	{
 
 
-		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y);
+		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y, color);
 		roboti->dodaj(robot);
 	}
 
@@ -66,6 +66,9 @@ public:
 				minRobot = currentRobot;
 			}
 		}
+
+	
+
 		if (minUdaljenost < maxDisplacement)
 		{
 			return minRobot;

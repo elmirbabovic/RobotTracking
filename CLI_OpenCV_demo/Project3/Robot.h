@@ -2,14 +2,17 @@
 #include "MyMath.h"
 #include "SlidingPath.h"
 #include "Nullable.h"
+#include "ATP/RedPov.h"
 
 class Robot
 {
 
 	SlidingPath* historijaPozicija = new SlidingPath(30);
 
+	cv::Scalar color;
 	int id;
-public:
+public:	
+	RedSekv<MotionStep*>* todoMovements = new RedSekv<MotionStep*>();
 	bool isRemoved = false;
 	NullableType<float> ugaoPravcaKretanja = nullptr;
 
@@ -22,9 +25,10 @@ public:
 		return Udaljenost_DvijeTacke(frame_point->point, p);
 	}
 
-	Robot(int id, int framePozicija, int x, int y)
+	Robot(int id, int framePozicija, int x, int y, cv::Scalar color)
 	{
 		this->id = id;
+		this->color = color;
 		DodajPoziciju(framePozicija, x, y);
 	}
 
@@ -41,6 +45,18 @@ public:
 
 		MotionStep* frame_point = historijaPozicija->GetNajnovija();
 		return frame_point;
+	}
+
+	cv::Scalar& GetColor()
+	{
+		return color;
+	}
+
+	int movementsCounter = 0;
+	void AddMovementPoint(int x, int y)
+	{
+		this->todoMovements->dodaj(new MotionStep(movementsCounter, x, y));
+		movementsCounter++;
 	}
 
 	NullableType<int> PravacDeltaY;

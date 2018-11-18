@@ -11,6 +11,12 @@ struct MotionStep
 		this->point = item;
 		this->versionNumber = versionNumber;
 	}
+
+	MotionStep(int versionNumber, int x, int y)
+	{
+		this->point = cv::Point(x,y);
+		this->versionNumber = versionNumber;
+	}
 };
 
 

@@ -9,7 +9,7 @@ class RedPov : public Red<Tip>
 private:
 	Cvor<Tip>* pocetak;
 	Cvor<Tip>* kraj;
-	int brojac;
+	int brojac=0;
 public:
 
 	int getVelicina()
