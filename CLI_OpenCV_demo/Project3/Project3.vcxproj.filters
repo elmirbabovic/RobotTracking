@@ -113,6 +113,9 @@
     <ClInclude Include="CliHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenCvHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">

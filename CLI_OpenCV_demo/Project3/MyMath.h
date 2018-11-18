@@ -36,3 +36,12 @@ static float IzracunajOdnos(float alpha)
 	float xy = tan(alpha*PI / 180);
 	return xy;
 }
+
+#include <string>
+
+
+static std::string intToString(int number) {
+	std::stringstream ss;
+	ss << number;
+	return ss.str();
+}
