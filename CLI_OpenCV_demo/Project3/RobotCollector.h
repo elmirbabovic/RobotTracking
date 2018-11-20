@@ -36,7 +36,7 @@ public:
 
 
 		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y, color);
-		roboti->dodaj(robot);
+		roboti->Add(robot);
 	}
 
 	Robot* GetById(int id)

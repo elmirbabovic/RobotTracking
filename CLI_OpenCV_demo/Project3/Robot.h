@@ -1,18 +1,40 @@
 #pragma once
 #include "MyMath.h"
-#include "SlidingPath.h"
+#include "MotionHistory.h"
 #include "Nullable.h"
 #include "ATP/RedPov.h"
+
+enum MoveActionType
+{
+	wait, move_foreward, move_backward
+};
+
+struct MoveAction
+{
+	MoveActionType actionType;
+	float intensity;
+	int duration_ms;
+};
+
+struct MoveActionMotor
+{
+	MoveAction leftMotor;
+	MoveAction rightMotor;
+};
+
 
 class Robot
 {
 
-	SlidingPath* historijaPozicija = new SlidingPath(30);
+	MotionHistory* motionHistory = new MotionHistory(30);
 
 	cv::Scalar color;
 	int id;
 public:	
-	RedSekv<MotionStep*>* todoMovements = new RedSekv<MotionStep*>();
+	RedSekv<MotionStep*>* todoTargetPoints = new RedSekv<MotionStep*>();
+	RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
+	
+
 	bool isRemoved = false;
 	NullableType<float> ugaoPravcaKretanja = nullptr;
 
@@ -39,11 +61,11 @@ public:
 
 	MotionStep* GetPozicijaNajnovija()
 	{
-		int velicina = historijaPozicija->getVelicina();
+		int velicina = motionHistory->Count();
 		if (velicina == 0)
 			return nullptr;
 
-		MotionStep* frame_point = historijaPozicija->GetNajnovija();
+		MotionStep* frame_point = motionHistory->GetCurrent();
 		return frame_point;
 	}
 
@@ -55,7 +77,7 @@ public:
 	int movementsCounter = 0;
 	void AddMovementPoint(int x, int y)
 	{
-		this->todoMovements->dodaj(new MotionStep(movementsCounter, x, y));
+		this->todoTargetPoints->dodaj(new MotionStep(movementsCounter, x, y));
 		movementsCounter++;
 	}
 
@@ -66,9 +88,9 @@ public:
 	{
 		cv::Point p2 = cv::Point(x2, y2);
 		int min_steps_for_angle_calc = 10;
-		if (historijaPozicija->getVelicina() > min_steps_for_angle_calc)
+		if (motionHistory->Count() > min_steps_for_angle_calc)
 		{
-			MotionStep* mPoint1 = historijaPozicija->getOlderVersion(min_steps_for_angle_calc);
+			MotionStep* mPoint1 = motionHistory->GetOlderVersion(min_steps_for_angle_calc);
 
 			if (mPoint1 != nullptr)
 			{
@@ -85,6 +107,6 @@ public:
 			}
 
 		}
-		historijaPozicija->dodaj(framePozicija, p2);
+		motionHistory->Add(framePozicija, p2);
 	}
 };

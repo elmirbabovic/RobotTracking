@@ -95,9 +95,6 @@
     <ClInclude Include="ATP\Cvor.h">
       <Filter>ATP</Filter>
     </ClInclude>
-    <ClInclude Include="SlidingPath.h">
-      <Filter>ATP</Filter>
-    </ClInclude>
     <ClInclude Include="MyMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -115,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="OpenCvHelper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionHistory.h">
+      <Filter>ATP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

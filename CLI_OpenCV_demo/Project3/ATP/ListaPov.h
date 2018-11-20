@@ -20,7 +20,7 @@ public:
 	{ 
 		for (int i = 0; i < velicina; i++)
 		{
-			dodaj(niz[i]);
+			Add(niz[i]);
 		}
 	}
 
@@ -28,7 +28,7 @@ public:
 	{
 		for (int i = 0; i < lista->count(); i++)
 		{
-			dodaj(lista.get(i));
+			Add(lista.get(i));
 		}
 	}
 
@@ -54,7 +54,7 @@ public:
 			Tip &x = get(i);
 			if (f(x))
 			{
-				dodaj(newK, x);
+				Add(newK, x);
 			}
 		}
 
@@ -62,7 +62,7 @@ public:
 	}
 
 
-	void dodaj(Tip v)
+	void Add(Tip v)
 	{
 		Cvor<Tip>* t = new Cvor<Tip>(v, prvi);
 		prvi = t;

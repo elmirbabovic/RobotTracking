@@ -34,7 +34,7 @@ public:
 	{
 		for (int i = 0; i < velicina; i++)
 		{
-			dodaj(niz[i]);
+			Add(niz[i]);
 		}
 	}
 
@@ -42,7 +42,7 @@ public:
 	{
 		for (int i = 0; i < lista->count(); i++)
 		{
-			dodaj(lista->get(i));
+			Add(lista->get(i));
 		}
 	}
 
@@ -50,7 +50,7 @@ public:
 	{
 	}
 
-	void dodaj(Tip v)
+	void Add(Tip v)
 	{
 		if (max == brojac)
 		{

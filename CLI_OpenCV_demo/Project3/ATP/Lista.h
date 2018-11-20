@@ -7,7 +7,7 @@ template <class Tip>
 class Lista 
 {
 public:
-	virtual void dodaj(Tip v) = 0;
+	virtual void Add(Tip v) = 0;
 
 	virtual Tip ukloni() = 0;
 
