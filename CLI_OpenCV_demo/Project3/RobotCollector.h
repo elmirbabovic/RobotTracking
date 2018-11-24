@@ -7,7 +7,6 @@ class RobotCollector
 {
 private:
 	Lista<Robot*>* roboti = new ListaSekv<Robot*>;
-
 public:
 
 	int Count()
@@ -25,7 +24,7 @@ public:
 			{
 				if (currentFrame - pozicija_najnovija->versionNumber > 100)
 				{
-					robot->isRemoved = true;
+					robot->Remove();
 				}
 			}
 		}
@@ -33,13 +32,11 @@ public:
 
 	void DodajRobota(int framePozicija, int pocetno_x, int pocetno_y, cv::Scalar color)
 	{
-
-
 		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y, color);
 		roboti->Add(robot);
 	}
 
-	Robot* GetById(int id)
+	Robot* GetRobotById(int id)
 	{
 		for (int i = 0; i < roboti->count(); ++i)
 		{
@@ -67,22 +64,18 @@ public:
 			}
 		}
 
-	
-
 		if (minUdaljenost < maxDisplacement)
 		{
 			return minRobot;
 		}
 
 		return nullptr;
-
 	}
 
-	Robot* GetRobot(int i)
+	Robot* GetRobotByIndex(int i)
 	{
 		if (i >= roboti->count())
 			return 0;
 		return roboti->get(i);
 	}
-
 };
