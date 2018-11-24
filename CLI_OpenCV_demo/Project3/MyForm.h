@@ -66,6 +66,7 @@ namespace CLRSample {
 
 	private: System::Windows::Forms::TrackBar^  trackBar1;
 	private: System::Windows::Forms::Timer^  timer1;
+	private: System::Windows::Forms::Timer^  timerForNavgation;
 
 
 
@@ -100,6 +101,7 @@ namespace CLRSample {
 			this->BtnSeekVideo = (gcnew System::Windows::Forms::Button());
 			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->timerForNavgation = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -143,6 +145,7 @@ namespace CLRSample {
 			this->cmbComPort->Name = L"cmbComPort";
 			this->cmbComPort->Size = System::Drawing::Size(100, 21);
 			this->cmbComPort->TabIndex = 4;
+			this->cmbComPort->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::cmbComPort_SelectedIndexChanged);
 			// 
 			// serialPort1
 			// 
@@ -222,6 +225,12 @@ namespace CLRSample {
 			this->timer1->Interval = 200;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
 			// 
+			// timerForNavgation
+			// 
+			this->timerForNavgation->Enabled = true;
+			this->timerForNavgation->Interval = 500;
+			this->timerForNavgation->Tick += gcnew System::EventHandler(this, &MyForm::timerForNavgation_Tick);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -265,22 +274,31 @@ namespace CLRSample {
 			PrintMessage("VizijaStop");
 		}
 	}
-	
-	private: System::Void BtnSendSerial_Click(System::Object^  sender, System::EventArgs^  e) {
-			try
-			{
-				this->serialPort1->PortName = cmbComPort->Text;
-				serialPort1->Open();
-				PrintMessage(cmbComPort->Text + " opened");
 
-				serialPort1->WriteLine(this->txtSerial->Text);
-				serialPort1->Close();
-				PrintMessage(cmbComPort->Text + " closed");
-			}
-			catch (System::Exception^ e)
-			{
-				PrintMessage("Greska: " + e->Message);
-			}
+			 private: void SendSerialCommand(System::String^ cmd)
+			 {
+				 try
+				 {
+					
+					 if (!serialPort1->IsOpen)
+					 {
+						 this->serialPort1->PortName = cmbComPort->Text;
+						 serialPort1->Open();
+						 PrintMessage(cmbComPort->Text + " opened");
+					 }
+
+
+					 serialPort1->WriteLine(cmd);
+					 //serialPort1->Close();
+					 PrintMessage(cmbComPort->Text + " sent: " + cmd);
+				 }
+				 catch (System::Exception^ e)
+				 {
+					 PrintMessage("Greska: " + e->Message);
+				 }
+			 }
+	private: System::Void BtnSendSerial_Click(System::Object^  sender, System::EventArgs^  e) {
+		SendSerialCommand(this->txtSerial->Text);
 	}
 
 	MyOpenCV* myOpenCV=nullptr;
@@ -354,5 +372,60 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 			PrintMessage(ms);
 		}
 	}
+void DoNavigation(int IDrobot, cv::Point currentPoint, float currentAngleOrientation, cv::Point todoTargetPoint) {
+
+	int Dx  = MyMath::DeltaX(currentPoint, todoTargetPoint );
+	int Dy = MyMath::DeltaY(currentPoint, todoTargetPoint );
+	float angleToDestination = MyMath::IzracunajUgao(Dx, Dy);
+	float angleDifference = angleToDestination - currentAngleOrientation;
+	if (angleDifference > 2)
+	{
+		SendSerialCommand("R3" + "-005" + "-020");//IDrobot.ToString()
+		//lijevi ide 5
+		//desni ide 20
+
+	}
+	else if (angleDifference < -2)
+	{
+		SendSerialCommand( "R3"+ "-020" + "-005");//IDrobot.ToString()
+
+		//lijevi ide 20
+	//desni ide 5
+	}
+	else {
+		SendSerialCommand("R3" + "-010" + "-010");//IDrobot.ToString()
+		//lijevi 10
+		//desni 10
+	}
+
+			 }
+private: System::Void timerForNavgation_Tick(System::Object^  sender, System::EventArgs^  e) {
+	if (myOpenCV == nullptr)
+		return;
+
+	for (int i = 0; i < myOpenCV->robot_collector.Count(); i++)
+	{
+		Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
+		auto queueTargets = robot->todoTargetPoints;
+		if (queueTargets->isPrazan())
+		{
+			continue;
+		}
+		MotionStep* pozicija = robot->GetPozicijaNajnovija();
+		if (pozicija != nullptr)
+		{
+			int IDrobot = robot->GetId();
+			cv::Point currentPoint = pozicija->point;
+			float currentAngleOrientation = robot->GetUgaoPravcaKretanja();
+			
+			cv::Point todoTargetPoint = queueTargets->getSaPozicije(0)->point;
+			DoNavigation(IDrobot, currentPoint, currentAngleOrientation, todoTargetPoint);
+		}
+
+	}
+}
+private: System::Void cmbComPort_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+
+}
 };
 }

@@ -85,6 +85,20 @@ public:
 	void SaveNewPosition(int frameId, int x, int y)
 	{
 		cv::Point p2 = cv::Point(x, y);
+
+		if (!this->todoTargetPoints->isPrazan())
+		{
+			MotionStep* targetPoint = this->todoTargetPoints->getSaPozicije(0);
+			cv::Point p1 = targetPoint->point;
+			float udaljenost = MyMath::Udaljenost_DvijeTacke(p1, p2);
+			if (udaljenost < 40)
+			{
+				this->todoTargetPoints->ukloni();
+			}
+		}
+			
+
+		
 		int min_steps_for_angle_calc = 10;
 		if (motionHistory->Count() > min_steps_for_angle_calc)
 		{

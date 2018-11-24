@@ -170,6 +170,7 @@
     <ClInclude Include="FormPictureBox.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Navigation.h" />
     <ClInclude Include="Nullable.h" />
     <ClInclude Include="OpenCvHelper.h" />
     <ClInclude Include="Robot.h" />

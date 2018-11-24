@@ -116,6 +116,9 @@
     <ClInclude Include="MotionHistory.h">
       <Filter>ATP</Filter>
     </ClInclude>
+    <ClInclude Include="Navigation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
