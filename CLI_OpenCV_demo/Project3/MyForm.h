@@ -380,20 +380,20 @@ void DoNavigation(int IDrobot, cv::Point currentPoint, float currentAngleOrienta
 	float angleDifference = angleToDestination - currentAngleOrientation;
 	if (angleDifference > 2)
 	{
-		SendSerialCommand("R3" + "-005" + "-020");//IDrobot.ToString()
+		SendSerialCommand("R3" + "-100" + "-200");//IDrobot.ToString()
 		//lijevi ide 5
 		//desni ide 20
 
 	}
 	else if (angleDifference < -2)
 	{
-		SendSerialCommand( "R3"+ "-020" + "-005");//IDrobot.ToString()
+		SendSerialCommand( "R3"+ "-200" + "-100");//IDrobot.ToString()
 
 		//lijevi ide 20
 	//desni ide 5
 	}
 	else {
-		SendSerialCommand("R3" + "-010" + "-010");//IDrobot.ToString()
+		SendSerialCommand("R3" + "-100" + "-100");//IDrobot.ToString()
 		//lijevi 10
 		//desni 10
 	}
