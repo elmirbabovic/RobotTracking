@@ -378,6 +378,8 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 				 x = x + 360;
 				 x = x % 360;
 			 }
+
+			
 void DoNavigation(int IDrobot, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
 
 	int Dx  = MyMath::DeltaX(currentPoint, todoTargetPoint );
@@ -385,6 +387,9 @@ void DoNavigation(int IDrobot, cv::Point currentPoint, int currentAngleOrientati
 	int angleToDestination = MyMath::IzracunajUgao(Dx, Dy);
 	popraviUgao(angleToDestination);
 	popraviUgao(currentAngleOrientation);
+
+	
+	
 	int angleDifference = angleToDestination - currentAngleOrientation;
 	popraviUgao(angleDifference);
 	//angleDifference += 360;

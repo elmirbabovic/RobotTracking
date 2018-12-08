@@ -149,6 +149,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AngleHistory.h" />
     <ClInclude Include="ATP\Cvor.h" />
     <ClInclude Include="ATP\Lista.h" />
     <ClInclude Include="ATP\ListaPov.h" />

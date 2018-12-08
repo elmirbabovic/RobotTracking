@@ -119,6 +119,9 @@
     <ClInclude Include="Navigation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AngleHistory.h">
+      <Filter>ATP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">

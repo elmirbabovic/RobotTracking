@@ -1,6 +1,7 @@
 #pragma once
 #include "MyMath.h"
 #include "MotionHistory.h"
+#include "AngleHistory.h"
 #include "Nullable.h"
 #include "ATP/RedPov.h"
 
@@ -27,6 +28,7 @@ class Robot
 {
 
 	MotionHistory* motionHistory = new MotionHistory(30);
+	
 	cv::Scalar color;
 	int id;
 	NullableType<int> PravacDeltaY = nullptr;
@@ -37,7 +39,7 @@ class Robot
 public:	
 	RedSekv<MotionStep*>* todoTargetPoints = new RedSekv<MotionStep*>();
 	RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
-	
+	AngleHistory* angleHistory = new AngleHistory(30);
 	float Udaljenost_OdTacke(cv::Point p)
 	{
 		MotionStep* frame_point = this->GetPozicijaNajnovija();
@@ -99,7 +101,7 @@ public:
 			
 
 		
-		int min_steps_for_angle_calc = 10;
+		int min_steps_for_angle_calc = 2;
 		if (motionHistory->Count() > min_steps_for_angle_calc)
 		{
 			MotionStep* mPoint1 = motionHistory->GetOlderVersion(min_steps_for_angle_calc);
@@ -115,6 +117,7 @@ public:
 					this->PravacDeltaX = Dx;
 					this->PravacDeltaY = Dy;
 					ugaoPravcaKretanja = MyMath::IzracunajUgao(Dx, Dy);
+					angleHistory->Add(frameId, ugaoPravcaKretanja);
 				}
 			}
 
@@ -131,9 +134,27 @@ public:
 	{
 		return isRemoved;
 	}
+	float izracunajProsjek(int broj)
+	{
+		float suma = 0;
+		for (int i = 0; i < broj; i++)
+		{
+			float ugao = angleHistory->GetOlderVersion(i)->point;
+			suma += ugao;
+		}
+		return suma / broj;
+	}
 
 	NullableType<float> GetUgaoPravcaKretanja()
 	{
+		//proba smoothinga nenormalnog
+		
+		if (angleHistory->Count() > 3)
+			return izracunajProsjek(3);
+		//kraj nenormalnog smoothong-a
+
+
+
 		return ugaoPravcaKretanja;
 	}
 
