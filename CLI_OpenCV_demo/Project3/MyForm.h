@@ -372,30 +372,42 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 			PrintMessage(ms);
 		}
 	}
-void DoNavigation(int IDrobot, cv::Point currentPoint, float currentAngleOrientation, cv::Point todoTargetPoint) {
+
+			 void popraviUgao(int& x)
+			 {
+				 x = x + 360;
+				 x = x % 360;
+			 }
+void DoNavigation(int IDrobot, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
 
 	int Dx  = MyMath::DeltaX(currentPoint, todoTargetPoint );
 	int Dy = MyMath::DeltaY(currentPoint, todoTargetPoint );
-	float angleToDestination = MyMath::IzracunajUgao(Dx, Dy);
-	float angleDifference = angleToDestination - currentAngleOrientation;
-	if (angleDifference > 2)
+	int angleToDestination = MyMath::IzracunajUgao(Dx, Dy);
+	popraviUgao(angleToDestination);
+	popraviUgao(currentAngleOrientation);
+	int angleDifference = angleToDestination - currentAngleOrientation;
+	popraviUgao(angleDifference);
+	//angleDifference += 360;
+	//angleDifference %= 360;
+	if (angleDifference > 10 && angleDifference < 180)
 	{
-		SendSerialCommand("R3" + "-100" + "-200");//IDrobot.ToString()
-		//lijevi ide 5
-		//desni ide 20
-
-	}
-	else if (angleDifference < -2)
-	{
-		SendSerialCommand( "R3"+ "-200" + "-100");//IDrobot.ToString()
-
+		SendSerialCommand( "R3"+ "-010" + "-100");//IDrobot.ToString()
+		PrintMessage("Idi desno za angleDifference = " + angleDifference.ToString());
 		//lijevi ide 20
 	//desni ide 5
+	}
+	else if (angleDifference > 180 && angleDifference < 350)
+	{
+		SendSerialCommand("R3" + "-100" + "-010");//IDrobot.ToString()
+		//lijevi ide 5
+		//desni ide 20
+		PrintMessage("Idi lijevo za angleDifference = " + angleDifference.ToString());
 	}
 	else {
 		SendSerialCommand("R3" + "-100" + "-100");//IDrobot.ToString()
 		//lijevi 10
 		//desni 10
+		PrintMessage("Idi ravno");
 	}
 
 			 }
