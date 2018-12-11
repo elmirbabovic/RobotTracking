@@ -136,26 +136,24 @@ public:
 	}
 	float izracunajProsjek(int broj)
 	{
-		float suma = 0;
-		for (int i = 0; i < broj; i++)
+		float alfa = 0.6;
+		float ugao = angleHistory->GetOlderVersion(broj+1)->point;
+		for (int i = broj; i >0; i--)
 		{
-			float ugao = angleHistory->GetOlderVersion(i)->point;
-			suma += ugao;
+			float ugao = ugao * (1-alfa) + angleHistory->GetOlderVersion(i+1)->point*alfa;
 		}
-		return suma / broj;
+		return ugao;
 	}
 
 	NullableType<float> GetUgaoPravcaKretanja()
 	{
 		//proba smoothinga nenormalnog
 		
-		if (angleHistory->Count() > 3)
-			return izracunajProsjek(3);
+		if (angleHistory->Count() > 5)
+			return izracunajProsjek(4);
 		//kraj nenormalnog smoothong-a
-
-
-
-		return ugaoPravcaKretanja;
+		else
+			return ugaoPravcaKretanja;
 	}
 
 	NullableType<int> GetPravacDeltaY()
