@@ -136,21 +136,28 @@ public:
 	}
 	float izracunajProsjek(int broj)
 	{
+		//proba exponencijalnog smoothing-a
 		float alfa = 0.6;
 		float ugao = angleHistory->GetOlderVersion(broj+1)->point;
-		for (int i = broj; i >0; i--)
+		for (int i = broj; i >=0; i--)
 		{
 			float ugao = ugao * (1-alfa) + angleHistory->GetOlderVersion(i+1)->point*alfa;
 		}
-		return ugao;
+		//Elmirov smoothing :-)
+		if (((ugao + 360) - (angleHistory->GetOlderVersion(1)->point + 360)) > 3)
+			return angleHistory->GetOlderVersion(1)->point + 3;
+		else if (((ugao + 360) - (angleHistory->GetOlderVersion(1)->point + 360)) < -3)
+			return angleHistory->GetOlderVersion(1)->point - 3;
+		else
+			return ugao;
 	}
 
 	NullableType<float> GetUgaoPravcaKretanja()
 	{
 		//proba smoothinga nenormalnog
 		
-		if (angleHistory->Count() > 5)
-			return izracunajProsjek(4);
+		if (angleHistory->Count() > 10)
+			return izracunajProsjek(9);
 		//kraj nenormalnog smoothong-a
 		else
 			return ugaoPravcaKretanja;
