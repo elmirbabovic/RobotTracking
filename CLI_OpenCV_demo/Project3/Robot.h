@@ -101,7 +101,7 @@ public:
 			
 
 		
-		int min_steps_for_angle_calc = 2;
+		int min_steps_for_angle_calc = 10;
 		if (motionHistory->Count() > min_steps_for_angle_calc)
 		{
 			MotionStep* mPoint1 = motionHistory->GetOlderVersion(min_steps_for_angle_calc);
@@ -137,17 +137,17 @@ public:
 	float izracunajProsjek(int broj)
 	{
 		//proba exponencijalnog smoothing-a
-		float alfa = 0.6;
+		float alfa = 0.7;
 		float ugao = angleHistory->GetOlderVersion(broj+1)->point;
 		for (int i = broj; i >=0; i--)
 		{
 			float ugao = ugao * (1-alfa) + angleHistory->GetOlderVersion(i+1)->point*alfa;
 		}
 		//Elmirov smoothing :-)
-		if (((ugao + 360) - (angleHistory->GetOlderVersion(1)->point + 360)) > 3)
-			return angleHistory->GetOlderVersion(1)->point + 3;
-		else if (((ugao + 360) - (angleHistory->GetOlderVersion(1)->point + 360)) < -3)
-			return angleHistory->GetOlderVersion(1)->point - 3;
+		if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) > 3)
+			return angleHistory->GetOlderVersion(10)->point + 3;
+		else if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) < -3)
+			return angleHistory->GetOlderVersion(10)->point - 3;
 		else
 			return ugao;
 	}
