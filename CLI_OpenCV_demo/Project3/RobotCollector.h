@@ -19,7 +19,7 @@ public:
 		for (int i = 0; i < roboti->count(); ++i)
 		{
 			Robot* robot = roboti->get(i);
-			MotionStep* pozicija_najnovija = robot->GetPozicijaNajnovija();
+			MotionStep* pozicija_najnovija = robot->GetPozicijaNajnovijaFront();
 			if (pozicija_najnovija != nullptr)
 			{
 				if (currentFrame - pozicija_najnovija->versionNumber > 100)
@@ -30,9 +30,9 @@ public:
 		}
 	}
 
-	void DodajRobota(int framePozicija, int pocetno_x, int pocetno_y, cv::Scalar color)
+	void DodajRobota(int framePozicija, int pocetno_x, int pocetno_y, cv::Scalar color, PointType pointType)
 	{
-		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y, color);
+		Robot* robot = new Robot(roboti->count(), framePozicija, pocetno_x, pocetno_y, color, pointType);
 		roboti->Add(robot);
 	}
 
@@ -56,7 +56,7 @@ public:
 		for (int i = 0; i < roboti->count(); ++i)
 		{
 			Robot* currentRobot = roboti->get(i);
-			float d = currentRobot->Udaljenost_OdTacke(p);
+			float d = currentRobot->Udaljenost_OdTackeFront(p);
 			if (d<minUdaljenost)
 			{
 				minUdaljenost = d;

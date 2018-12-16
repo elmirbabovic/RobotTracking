@@ -5,6 +5,11 @@
 #include "Nullable.h"
 #include "ATP/RedPov.h"
 
+enum PointType
+{
+	frontPoint, rearPoint
+};
+
 enum MoveActionType
 {
 	wait, move_foreward, move_backward
@@ -27,7 +32,8 @@ struct MoveActionMotor
 class Robot
 {
 
-	MotionHistory* motionHistory = new MotionHistory(30);
+	MotionHistory* motionHistoryFront = new MotionHistory(30);
+	MotionHistory* motionHistoryRear = new MotionHistory(30);
 	
 	cv::Scalar color;
 	int id;
@@ -40,20 +46,29 @@ public:
 	RedSekv<MotionStep*>* todoTargetPoints = new RedSekv<MotionStep*>();
 	RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
 	AngleHistory* angleHistory = new AngleHistory(30);
-	float Udaljenost_OdTacke(cv::Point p)
+	float Udaljenost_OdTackeFront(cv::Point p)
 	{
-		MotionStep* frame_point = this->GetPozicijaNajnovija();
+		MotionStep* frame_point = this->GetPozicijaNajnovijaFront();
 		if (frame_point == nullptr)
 			return INT_MAX;
 
 		return MyMath::Udaljenost_DvijeTacke(frame_point->point, p);
 	}
 
-	Robot(int id, int frameId, int x, int y, cv::Scalar color)
+	float Udaljenost_OdTackeRear(cv::Point p)
+	{
+		MotionStep* frame_point = this->GetPozicijaNajnovijaRear();
+		if (frame_point == nullptr)
+			return INT_MAX;
+
+		return MyMath::Udaljenost_DvijeTacke(frame_point->point, p);
+	}
+
+	Robot(int id, int frameId, int x, int y, cv::Scalar color, PointType pointType)
 	{
 		this->id = id;
 		this->color = color;
-		SaveNewPosition(frameId, x, y);
+		SaveNewPosition(frameId, x, y, pointType);
 	}
 
 	int GetId()
@@ -61,13 +76,23 @@ public:
 		return id;
 	}
 
-	MotionStep* GetPozicijaNajnovija()
+	MotionStep* GetPozicijaNajnovijaFront()
 	{
-		int velicina = motionHistory->Count();
+		int velicina = motionHistoryFront->Count();
 		if (velicina == 0)
 			return nullptr;
 
-		MotionStep* frame_point = motionHistory->GetCurrent();
+		MotionStep* frame_point = motionHistoryFront->GetCurrent();
+		return frame_point;
+	}
+
+	MotionStep* GetPozicijaNajnovijaRear()
+	{
+		int velicina = motionHistoryRear->Count();
+		if (velicina == 0)
+			return nullptr;
+
+		MotionStep* frame_point = motionHistoryRear->GetCurrent();
 		return frame_point;
 	}
 
@@ -84,7 +109,7 @@ public:
 	}
 
 
-	void SaveNewPosition(int frameId, int x, int y)
+	void SaveNewPosition(int frameId, int x, int y, PointType pointType)
 	{
 		cv::Point p2 = cv::Point(x, y);
 
@@ -101,8 +126,8 @@ public:
 			
 
 		
-		int min_steps_for_angle_calc = 10;
-		if (motionHistory->Count() > min_steps_for_angle_calc)
+		int min_steps_for_angle_calc = 3;
+		/*if (motionHistory->Count() > min_steps_for_angle_calc)
 		{
 			MotionStep* mPoint1 = motionHistory->GetOlderVersion(min_steps_for_angle_calc);
 
@@ -112,7 +137,7 @@ public:
 				int Dx = MyMath::DeltaX(p1, p2);
 				int Dy = MyMath::DeltaY(p1, p2);
 				float c = MyMath::GetC(Dy, Dx);
-				if (c > 5)
+				if (c > 2)
 				{
 					this->PravacDeltaX = Dx;
 					this->PravacDeltaY = Dy;
@@ -121,8 +146,12 @@ public:
 				}
 			}
 
-		}
-		motionHistory->Add(frameId, p2);
+		}*/
+		if (pointType==frontPoint)
+			motionHistoryFront->Add(frameId, p2);
+
+		if (pointType == rearPoint)
+			motionHistoryRear->Add(frameId, p2);
 	}
 
 	void Remove()
@@ -156,10 +185,10 @@ public:
 	{
 		//proba smoothinga nenormalnog
 		
-		if (angleHistory->Count() > 10)
-			return izracunajProsjek(9);
-		//kraj nenormalnog smoothong-a
-		else
+		//if (angleHistory->Count() > 10)
+		//	return izracunajProsjek(9);
+		////kraj nenormalnog smoothong-a
+		//else
 			return ugaoPravcaKretanja;
 	}
 

@@ -428,7 +428,7 @@ private: System::Void timerForNavgation_Tick(System::Object^  sender, System::Ev
 		{
 			continue;
 		}
-		MotionStep* pozicija = robot->GetPozicijaNajnovija();
+		MotionStep* pozicija = robot->GetPozicijaNajnovijaFront();
 		if (pozicija != nullptr)
 		{
 			int IDrobot = robot->GetId();
