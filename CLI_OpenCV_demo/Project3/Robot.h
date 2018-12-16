@@ -163,23 +163,23 @@ public:
 	{
 		return isRemoved;
 	}
-	float izracunajProsjek(int broj)
-	{
-		//proba exponencijalnog smoothing-a
-		float alfa = 0.7;
-		float ugao = angleHistory->GetOlderVersion(broj+1)->point;
-		for (int i = broj; i >=0; i--)
-		{
-			float ugao = ugao * (1-alfa) + angleHistory->GetOlderVersion(i+1)->point*alfa;
-		}
-		//Elmirov smoothing :-)
-		if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) > 3)
-			return angleHistory->GetOlderVersion(10)->point + 3;
-		else if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) < -3)
-			return angleHistory->GetOlderVersion(10)->point - 3;
-		else
-			return ugao;
-	}
+	//float izracunajProsjek(int broj)
+	//{
+	//	//proba exponencijalnog smoothing-a
+	//	float alfa = 0.7;
+	//	float ugao = angleHistory->GetOlderVersion(broj+1)->point;
+	//	for (int i = broj; i >=0; i--)
+	//	{
+	//		float ugao = ugao * (1-alfa) + angleHistory->GetOlderVersion(i+1)->point*alfa;
+	//	}
+	//	//Elmirov smoothing :-)
+	//	if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) > 3)
+	//		return angleHistory->GetOlderVersion(10)->point + 3;
+	//	else if (((ugao + 360) - (angleHistory->GetOlderVersion(10)->point + 360)) < -3)
+	//		return angleHistory->GetOlderVersion(10)->point - 3;
+	//	else
+	//		return ugao;
+	//}
 
 	NullableType<float> GetUgaoPravcaKretanja()
 	{
@@ -189,6 +189,18 @@ public:
 		//	return izracunajProsjek(9);
 		////kraj nenormalnog smoothong-a
 		//else
+
+		MotionStep* positionFront = GetPozicijaNajnovijaFront();
+		MotionStep* positionRear = GetPozicijaNajnovijaRear();
+		if (positionFront == nullptr || positionRear == nullptr)
+			return nullptr;
+
+
+		int  dx = MyMath::DeltaX(positionFront->point, positionRear->point);
+		int  dy = MyMath::DeltaY(positionFront->point, positionRear->point);
+
+		ugaoPravcaKretanja = MyMath::IzracunajUgao(dx, dy);
+
 			return ugaoPravcaKretanja;
 	}
 
