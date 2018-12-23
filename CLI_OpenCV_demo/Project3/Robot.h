@@ -10,23 +10,23 @@ enum PointType
 	frontPoint, rearPoint
 };
 
-enum MoveActionType
-{
-	wait, move_foreward, move_backward
-};
-
-struct MoveAction
-{
-	MoveActionType actionType;
-	float intensity;
-	int duration_ms;
-};
-
-struct MoveActionMotor
-{
-	MoveAction leftMotor;
-	MoveAction rightMotor;
-};
+//enum MoveActionType
+//{
+//	wait, move_foreward, move_backward
+//};
+//
+//struct MoveAction
+//{
+//	MoveActionType actionType;
+//	float intensity;
+//	int duration_ms;
+//};
+//
+//struct MoveActionMotor
+//{
+//	MoveAction leftMotor;
+//	MoveAction rightMotor;
+//};
 
 
 class Robot
@@ -44,7 +44,7 @@ class Robot
 	NullableType<float> ugaoPravcaKretanja = nullptr;
 public:	
 	RedSekv<MotionStep*>* todoTargetPoints = new RedSekv<MotionStep*>();
-	RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
+	//RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
 	AngleHistory* angleHistory = new AngleHistory(30);
 	float Udaljenost_OdTackeFront(cv::Point p)
 	{

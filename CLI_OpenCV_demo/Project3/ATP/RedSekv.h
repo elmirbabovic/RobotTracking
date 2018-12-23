@@ -31,6 +31,12 @@ private:
 		cout << "\nRED: rekonstrukcija - nova velicina je " << newMax << endl;
 	}
 public:
+	void clear()
+	{
+		brojac = 0;
+		kraj = 0;
+		pocetak = 0;
+	}
 	int getVelicina()
 	{
 		return brojac;
