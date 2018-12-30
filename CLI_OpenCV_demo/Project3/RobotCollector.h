@@ -56,6 +56,8 @@ public:
 		for (int i = 0; i < roboti->count(); ++i)
 		{
 			Robot* currentRobot = roboti->get(i);
+			if (currentRobot->GetIsRemoved())
+				continue;
 			float d = currentRobot->Udaljenost_OdTackeFront(p);
 			if (d<minUdaljenost)
 			{
