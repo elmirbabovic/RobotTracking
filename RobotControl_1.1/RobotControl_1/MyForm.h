@@ -67,6 +67,10 @@ namespace CLRSample {
 	private: System::Windows::Forms::TrackBar^  trackBar1;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::Timer^  timerForNavgation;
+	private: System::Windows::Forms::TextBox^  txtR1;
+	private: System::Windows::Forms::TextBox^  txtR2;
+	private: System::Windows::Forms::TextBox^  txtR3;
+	private: System::Windows::Forms::TextBox^  txtR4;
 
 
 
@@ -102,6 +106,10 @@ namespace CLRSample {
 			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->timerForNavgation = (gcnew System::Windows::Forms::Timer(this->components));
+			this->txtR1 = (gcnew System::Windows::Forms::TextBox());
+			this->txtR2 = (gcnew System::Windows::Forms::TextBox());
+			this->txtR3 = (gcnew System::Windows::Forms::TextBox());
+			this->txtR4 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -228,14 +236,46 @@ namespace CLRSample {
 			// timerForNavgation
 			// 
 			this->timerForNavgation->Enabled = true;
-			this->timerForNavgation->Interval = 50;
+			this->timerForNavgation->Interval = 70;
 			this->timerForNavgation->Tick += gcnew System::EventHandler(this, &MyForm::timerForNavgation_Tick);
+			// 
+			// txtR1
+			// 
+			this->txtR1->Location = System::Drawing::Point(279, 333);
+			this->txtR1->Name = L"txtR1";
+			this->txtR1->Size = System::Drawing::Size(100, 20);
+			this->txtR1->TabIndex = 12;
+			// 
+			// txtR2
+			// 
+			this->txtR2->Location = System::Drawing::Point(397, 333);
+			this->txtR2->Name = L"txtR2";
+			this->txtR2->Size = System::Drawing::Size(100, 20);
+			this->txtR2->TabIndex = 12;
+			// 
+			// txtR3
+			// 
+			this->txtR3->Location = System::Drawing::Point(517, 333);
+			this->txtR3->Name = L"txtR3";
+			this->txtR3->Size = System::Drawing::Size(100, 20);
+			this->txtR3->TabIndex = 12;
+			// 
+			// txtR4
+			// 
+			this->txtR4->Location = System::Drawing::Point(633, 333);
+			this->txtR4->Name = L"txtR4";
+			this->txtR4->Size = System::Drawing::Size(100, 20);
+			this->txtR4->TabIndex = 12;
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 344);
+			this->ClientSize = System::Drawing::Size(857, 375);
+			this->Controls->Add(this->txtR4);
+			this->Controls->Add(this->txtR3);
+			this->Controls->Add(this->txtR2);
+			this->Controls->Add(this->txtR1);
 			this->Controls->Add(this->trackBar1);
 			this->Controls->Add(this->BtnSeekVideo);
 			this->Controls->Add(this->BtnVizijaPause);
@@ -290,11 +330,11 @@ namespace CLRSample {
 
 					 serialPort1->WriteLine(cmd);
 					 //serialPort1->Close();
-					 PrintMessage(cmbComPort->Text + " sent: " + cmd);
+					 PrintMessage2(cmbComPort->Text + " sent: " + cmd);
 				 }
 				 catch (System::Exception^ e)
 				 {
-					 PrintMessage("Greska: " + e->Message);
+					 PrintMessage2("Greska: " + e->Message);
 				 }
 			 }
 	private: System::Void BtnSendSerial_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -338,11 +378,15 @@ namespace CLRSample {
 
 
 	private: void PrintMessage(System::String^ msg)	{
-		TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+		/*TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 		TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
-		TxtOutputMessages->ScrollToCaret();
+		TxtOutputMessages->ScrollToCaret();*/
 	}
-
+private: void PrintMessage2(System::String^ msg) {
+	TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+	TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
+	TxtOutputMessages->ScrollToCaret();
+}
 	
 
 	private: System::Void BtnVizijaPause_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -379,8 +423,26 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 				 x = x % 360;
 			 }
 
+
+			 int GetPhysicalRobotId(int virtualId)
+			 {
+				 if (txtR1->Text == virtualId.ToString())
+					 return 1;
+				 if (txtR2->Text == virtualId.ToString())
+					 return 2;
+				 if (txtR3->Text == virtualId.ToString())
+					 return 3;
+				 if (txtR4->Text == virtualId.ToString())
+					 return 4;
+
+				 return -1;
+			 }
+		
+
 			
-void DoNavigation(int IDrobot, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
+void DoNavigation(char * finalnaPoruka, int virtualId, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
+
+	
 
 	int Dx  = MyMath::DeltaX(currentPoint, todoTargetPoint );
 	int Dy = MyMath::DeltaY(currentPoint, todoTargetPoint );
@@ -388,58 +450,100 @@ void DoNavigation(int IDrobot, cv::Point currentPoint, int currentAngleOrientati
 	popraviUgao(angleToDestination);
 	popraviUgao(currentAngleOrientation);
 
-	
-	
+	int physicalRobotId = GetPhysicalRobotId(virtualId);
+	auto rID = physicalRobotId.ToString();
+	//rID = "1";
+	int robotCharsStart = (physicalRobotId -1) * 10;
+	int lijevoStart = robotCharsStart + 3;
+	int desnoStart = robotCharsStart + 7;
+
 	int angleDifference = angleToDestination - currentAngleOrientation;
 	popraviUgao(angleDifference);
 	//angleDifference += 360;
 	//angleDifference %= 360;
 	if (angleDifference > 0 && angleDifference < 170)
 	{
-		SendSerialCommand( "R3"+ "-130" + "-010");//IDrobot.ToString()
-		PrintMessage("Idi lijevo za angleDifference = " + angleDifference.ToString());
+		PrintMessage("Idi lijevo za angleDifference = " + rID + " - " + angleDifference.ToString());
+
+	
+		finalnaPoruka[lijevoStart+0] = '1';
+		finalnaPoruka[lijevoStart+1] = '3';
+		finalnaPoruka[lijevoStart+2] = '0';
+
+		finalnaPoruka[desnoStart + 0] = '0';
+		finalnaPoruka[desnoStart + 1] = '1';
+		finalnaPoruka[desnoStart + 2] = '0';
+
 		//lijevi ide 20
 	//desni ide 5
 	}
 	else if (angleDifference > 190 && angleDifference < 360)
 	{
-		SendSerialCommand("R3" + "-010" + "-130");//IDrobot.ToString()
+		PrintMessage("Idi desno za angleDifference = " + rID + " - " + angleDifference.ToString());
+	
 		//lijevi ide 5
 		//desni ide 20
-		PrintMessage("Idi desno za angleDifference = " + angleDifference.ToString());
+		finalnaPoruka[lijevoStart + 0] = '0';
+		finalnaPoruka[lijevoStart + 1] = '1';
+		finalnaPoruka[lijevoStart + 2] = '0';
+
+		finalnaPoruka[desnoStart + 0] = '1';
+		finalnaPoruka[desnoStart + 1] = '3';
+		finalnaPoruka[desnoStart + 2] = '0';
+		
 	}
 	else {
 		//350 - 370
-		SendSerialCommand("R3" + "-180" + "-180");//IDrobot.ToString()
-		//lijevi 10
-		//desni 10
-		PrintMessage("Idi ravno");
-	}
+		PrintMessage("Idi ravno" + rID + " - ");
+		finalnaPoruka[lijevoStart + 0] = '1';
+		finalnaPoruka[lijevoStart + 1] = '3';	//lijevi 10
+		finalnaPoruka[lijevoStart + 2] = '0';	//desni 10
 
+		finalnaPoruka[desnoStart + 0] = '1';
+		finalnaPoruka[desnoStart + 1] = '3';
+		finalnaPoruka[desnoStart + 2] = '0';
+	}
+	
 			 }
+int ciklus = 0;
 private: System::Void timerForNavgation_Tick(System::Object^  sender, System::EventArgs^  e) {
 	if (myOpenCV == nullptr)
 		return;
+	ciklus++;
+	int ukupnoRobota= myOpenCV->robot_collector.Count();
+	
+	char* finalnaPorukaChars = new char[50];
+	strcpy_s(finalnaPorukaChars, 50, "R1-000-000R2-000-000R3-000-000R4-000-000------");
+	
 
-	for (int i = 0; i < myOpenCV->robot_collector.Count(); i++)
+	for (int i = 0; i < ukupnoRobota; i++)
 	{
-		Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
-		auto queueTargets = robot->todoTargetPoints;
-		if (queueTargets->isPrazan())
+		//if (i == ciklus % ukupnoRobota)
 		{
-			continue;
-		}
-		MotionStep* pozicija = robot->GetPozicijaNajnovijaFront();
-		if (pozicija != nullptr)
-		{
-			int IDrobot = robot->GetId();
-			cv::Point currentPoint = pozicija->point;
-			float currentAngleOrientation = robot->GetUgaoPravcaKretanja();
-			
-			cv::Point todoTargetPoint = queueTargets->getSaPozicije(0)->point;
-			DoNavigation(IDrobot, currentPoint, currentAngleOrientation, todoTargetPoint);
+			Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
+			auto queueTargets = robot->todoTargetPoints;
+			if (queueTargets->isPrazan())
+			{
+				continue;
+			}
+			MotionStep* pozicija = robot->GetPozicijaNajnovijaFront();
+			if (pozicija != nullptr)
+			{
+				int IDrobot = robot->GetId();
+				cv::Point currentPoint = pozicija->point;
+				float currentAngleOrientation = robot->GetUgaoPravcaKretanja();
+
+				cv::Point todoTargetPoint = queueTargets->getSaPozicije(0)->point;
+				DoNavigation(finalnaPorukaChars, IDrobot, currentPoint, currentAngleOrientation, todoTargetPoint);
+
+				/*timerForNavgation->Stop();
+				Sleep(50);
+				timerForNavgation->Start();*/
+			}
 		}
 
+		System::String^ finalnaPorukaStrings = gcnew System::String(finalnaPorukaChars);
+		SendSerialCommand(finalnaPorukaStrings);
 	}
 }
 private: System::Void cmbComPort_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
