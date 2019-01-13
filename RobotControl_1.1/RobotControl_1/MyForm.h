@@ -366,7 +366,7 @@ namespace CLRSample {
 
 		auto t = gcnew Thread(gcnew ParameterizedThreadStart(ThreadCall));
 		t->Start(this);
-		t->Join();
+		
 		
 	}
 	private: System::Void BtnShowMat_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -399,9 +399,9 @@ namespace CLRSample {
 		TxtOutputMessages->ScrollToCaret();*/
 	}
 private: void PrintMessage2(System::String^ msg) {
-	TxtOutputMessages->Text += "frame: " +  myOpenCV->framePozicija.ToString() + "--->" +  DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+	/*TxtOutputMessages->Text += "frame: " +  myOpenCV->framePozicija.ToString() + "--->" +  DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 	TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
-	TxtOutputMessages->ScrollToCaret();
+	TxtOutputMessages->ScrollToCaret();*/
 }
 	
 
@@ -537,30 +537,41 @@ private: System::Void timerForNavgation_Tick(System::Object^  sender, System::Ev
 		//if (i == ciklus % ukupnoRobota)
 		{
 			Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
+			int virtualId = robot->GetId();
+
+			int physicalRobotId = GetPhysicalRobotId(virtualId);
+		//	auto rID = physicalRobotId.ToString();
+
 			auto queueTargets = robot->todoTargetPoints;
 			if (queueTargets->isPrazan())
 			{
+				//PrintMessage2("Preskoèen robot br. " + physicalRobotId.ToString());
 				continue;
+				
 			}
 			MotionStep* pozicija = robot->GetPozicijaNajnovijaFront();
 			if (pozicija != nullptr)
 			{
-				int IDrobot = robot->GetId();
+				
 				cv::Point currentPoint = pozicija->point;
 				float currentAngleOrientation = robot->GetUgaoPravcaKretanja();
 
 				cv::Point todoTargetPoint = queueTargets->getSaPozicije(0)->point;
-				DoNavigation(finalnaPorukaChars, IDrobot, currentPoint, currentAngleOrientation, todoTargetPoint);
+				DoNavigation(finalnaPorukaChars, virtualId, currentPoint, currentAngleOrientation, todoTargetPoint);
 
 				/*timerForNavgation->Stop();
 				Sleep(50);
 				timerForNavgation->Start();*/
 			}
+			else
+			{
+				PrintMessage2("Nema pozicije za robota br. " + physicalRobotId.ToString());
+			}
 		}
-
-		System::String^ finalnaPorukaStrings = gcnew System::String(finalnaPorukaChars);
-		SendSerialCommand(finalnaPorukaStrings);
 	}
+
+	System::String^ finalnaPorukaStrings = gcnew System::String(finalnaPorukaChars);
+	SendSerialCommand(finalnaPorukaStrings);
 }
 private: System::Void cmbComPort_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 
