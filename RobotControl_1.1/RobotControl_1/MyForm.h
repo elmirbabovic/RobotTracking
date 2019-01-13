@@ -252,6 +252,7 @@ namespace CLRSample {
 			this->txtR2->Name = L"txtR2";
 			this->txtR2->Size = System::Drawing::Size(100, 20);
 			this->txtR2->TabIndex = 12;
+			this->txtR2->Text = L"0";
 			// 
 			// txtR3
 			// 
@@ -259,6 +260,7 @@ namespace CLRSample {
 			this->txtR3->Name = L"txtR3";
 			this->txtR3->Size = System::Drawing::Size(100, 20);
 			this->txtR3->TabIndex = 12;
+			this->txtR3->Text = L"1";
 			// 
 			// txtR4
 			// 
@@ -383,7 +385,7 @@ namespace CLRSample {
 		TxtOutputMessages->ScrollToCaret();*/
 	}
 private: void PrintMessage2(System::String^ msg) {
-	TxtOutputMessages->Text += DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+	TxtOutputMessages->Text += "frame: " +  myOpenCV->framePozicija.ToString() + "--->" +  DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 	TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
 	TxtOutputMessages->ScrollToCaret();
 }
@@ -513,7 +515,7 @@ private: System::Void timerForNavgation_Tick(System::Object^  sender, System::Ev
 	int ukupnoRobota= myOpenCV->robot_collector.Count();
 	
 	char* finalnaPorukaChars = new char[50];
-	strcpy_s(finalnaPorukaChars, 50, "R1-000-000R2-000-000R3-000-000R4-000-000------");
+	strcpy_s(finalnaPorukaChars, 50, "R1-001-001R2-001-001R3-001-001R4-001-001------");
 	
 
 	for (int i = 0; i < ukupnoRobota; i++)
