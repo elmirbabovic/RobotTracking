@@ -13,6 +13,7 @@
 #include <iostream>  
 using namespace System;
 using namespace std;
+using namespace System::Threading;
 
 namespace CLRSample {
 
@@ -346,14 +347,27 @@ namespace CLRSample {
 	MyOpenCV* myOpenCV=nullptr;
 
 	
-
+	static void ThreadCall(Object^ o)
+	{
+		auto me = (MyForm^)o;
+		me->startVizijaM(); // Call a method of an instance of the native class
+	
+	}
+	public: void startVizijaM()
+	{
+		myOpenCV->VisionStart();
+	}
 	private: System::Void BtnStartVizija_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (myOpenCV == nullptr)
 		{
 			myOpenCV = new MyOpenCV;
 		}
 		PrintMessage("VizijaStart");
-		myOpenCV->VisionStart();
+
+		auto t = gcnew Thread(gcnew ParameterizedThreadStart(ThreadCall));
+		t->Start(this);
+		t->Join();
+		
 	}
 	private: System::Void BtnShowMat_Click(System::Object^  sender, System::EventArgs^  e) {
 		cv::Mat matImage = cv::imread("c:\\_robottracking\\slika1.jpg", CV_LOAD_IMAGE_COLOR);
