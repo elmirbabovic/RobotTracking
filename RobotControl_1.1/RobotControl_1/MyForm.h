@@ -72,6 +72,24 @@ namespace CLRSample {
 	private: System::Windows::Forms::TextBox^  txtR2;
 	private: System::Windows::Forms::TextBox^  txtR3;
 	private: System::Windows::Forms::TextBox^  txtR4;
+	private: System::Windows::Forms::Button^  btnInitialize1;
+	private: System::Windows::Forms::Button^  btnInitialize2;
+	private: System::Windows::Forms::Button^  btnInitialize4;
+
+
+
+
+	private: System::Windows::Forms::Button^  btnInitialize3;
+	private: System::Windows::Forms::Button^  btnInitializeAll;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::Label^  label5;
+
+
+
+
 
 
 
@@ -111,6 +129,16 @@ namespace CLRSample {
 			this->txtR2 = (gcnew System::Windows::Forms::TextBox());
 			this->txtR3 = (gcnew System::Windows::Forms::TextBox());
 			this->txtR4 = (gcnew System::Windows::Forms::TextBox());
+			this->btnInitialize1 = (gcnew System::Windows::Forms::Button());
+			this->btnInitialize2 = (gcnew System::Windows::Forms::Button());
+			this->btnInitialize4 = (gcnew System::Windows::Forms::Button());
+			this->btnInitialize3 = (gcnew System::Windows::Forms::Button());
+			this->btnInitializeAll = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -146,14 +174,15 @@ namespace CLRSample {
 			// cmbComPort
 			// 
 			this->cmbComPort->FormattingEnabled = true;
-			this->cmbComPort->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+			this->cmbComPort->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
 				L"COM1", L"COM2", L"COM3", L"COM4", L"COM5", L"COM6",
-					L"COM7"
+					L"COM7", L"COM8", L"COM9", L"COM10"
 			});
 			this->cmbComPort->Location = System::Drawing::Point(12, 301);
 			this->cmbComPort->Name = L"cmbComPort";
 			this->cmbComPort->Size = System::Drawing::Size(100, 21);
 			this->cmbComPort->TabIndex = 4;
+			this->cmbComPort->Text = L"COM4";
 			this->cmbComPort->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::cmbComPort_SelectedIndexChanged);
 			// 
 			// serialPort1
@@ -253,7 +282,6 @@ namespace CLRSample {
 			this->txtR2->Name = L"txtR2";
 			this->txtR2->Size = System::Drawing::Size(100, 20);
 			this->txtR2->TabIndex = 12;
-			this->txtR2->Text = L"0";
 			// 
 			// txtR3
 			// 
@@ -261,7 +289,6 @@ namespace CLRSample {
 			this->txtR3->Name = L"txtR3";
 			this->txtR3->Size = System::Drawing::Size(100, 20);
 			this->txtR3->TabIndex = 12;
-			this->txtR3->Text = L"1";
 			// 
 			// txtR4
 			// 
@@ -270,11 +297,116 @@ namespace CLRSample {
 			this->txtR4->Size = System::Drawing::Size(100, 20);
 			this->txtR4->TabIndex = 12;
 			// 
+			// btnInitialize1
+			// 
+			this->btnInitialize1->Location = System::Drawing::Point(279, 359);
+			this->btnInitialize1->Name = L"btnInitialize1";
+			this->btnInitialize1->Size = System::Drawing::Size(100, 23);
+			this->btnInitialize1->TabIndex = 13;
+			this->btnInitialize1->Text = L"Initialize 1";
+			this->btnInitialize1->UseVisualStyleBackColor = true;
+			this->btnInitialize1->Click += gcnew System::EventHandler(this, &MyForm::btnInitialize1_Click);
+			// 
+			// btnInitialize2
+			// 
+			this->btnInitialize2->Location = System::Drawing::Point(397, 359);
+			this->btnInitialize2->Name = L"btnInitialize2";
+			this->btnInitialize2->Size = System::Drawing::Size(100, 23);
+			this->btnInitialize2->TabIndex = 14;
+			this->btnInitialize2->Text = L"Initialize 2";
+			this->btnInitialize2->UseVisualStyleBackColor = true;
+			this->btnInitialize2->Click += gcnew System::EventHandler(this, &MyForm::btnInitialize2_Click);
+			// 
+			// btnInitialize4
+			// 
+			this->btnInitialize4->Location = System::Drawing::Point(633, 359);
+			this->btnInitialize4->Name = L"btnInitialize4";
+			this->btnInitialize4->Size = System::Drawing::Size(100, 23);
+			this->btnInitialize4->TabIndex = 16;
+			this->btnInitialize4->Text = L"Initialize 4";
+			this->btnInitialize4->UseVisualStyleBackColor = true;
+			this->btnInitialize4->Click += gcnew System::EventHandler(this, &MyForm::btnInitialize4_Click);
+			// 
+			// btnInitialize3
+			// 
+			this->btnInitialize3->Location = System::Drawing::Point(515, 359);
+			this->btnInitialize3->Name = L"btnInitialize3";
+			this->btnInitialize3->Size = System::Drawing::Size(100, 23);
+			this->btnInitialize3->TabIndex = 15;
+			this->btnInitialize3->Text = L"Initialize 3";
+			this->btnInitialize3->UseVisualStyleBackColor = true;
+			this->btnInitialize3->Click += gcnew System::EventHandler(this, &MyForm::btnInitialize3_Click);
+			// 
+			// btnInitializeAll
+			// 
+			this->btnInitializeAll->Location = System::Drawing::Point(279, 388);
+			this->btnInitializeAll->Name = L"btnInitializeAll";
+			this->btnInitializeAll->Size = System::Drawing::Size(454, 23);
+			this->btnInitializeAll->TabIndex = 17;
+			this->btnInitializeAll->Text = L"Initialize All";
+			this->btnInitializeAll->UseVisualStyleBackColor = true;
+			this->btnInitializeAll->Click += gcnew System::EventHandler(this, &MyForm::btnInitializeAll_Click);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(176, 336);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(97, 13);
+			this->label1->TabIndex = 18;
+			this->label1->Text = L"Virtual values (0..n)";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(295, 317);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(55, 13);
+			this->label2->TabIndex = 19;
+			this->label2->Text = L"Physical 1";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(414, 317);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(55, 13);
+			this->label3->TabIndex = 19;
+			this->label3->Text = L"Physical 2";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(651, 317);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(55, 13);
+			this->label4->TabIndex = 19;
+			this->label4->Text = L"Physical 4";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(535, 317);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(55, 13);
+			this->label5->TabIndex = 19;
+			this->label5->Text = L"Physical 3";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 375);
+			this->ClientSize = System::Drawing::Size(857, 423);
+			this->Controls->Add(this->label5);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->btnInitializeAll);
+			this->Controls->Add(this->btnInitialize4);
+			this->Controls->Add(this->btnInitialize3);
+			this->Controls->Add(this->btnInitialize2);
+			this->Controls->Add(this->btnInitialize1);
 			this->Controls->Add(this->txtR4);
 			this->Controls->Add(this->txtR3);
 			this->Controls->Add(this->txtR2);
@@ -333,7 +465,7 @@ namespace CLRSample {
 
 					 serialPort1->WriteLine(cmd);
 					 //serialPort1->Close();
-					 PrintMessage2(cmbComPort->Text + " sent: " + cmd);
+					 //PrintMessage2(cmbComPort->Text + " sent: " + cmd);
 				 }
 				 catch (System::Exception^ e)
 				 {
@@ -399,9 +531,9 @@ namespace CLRSample {
 		TxtOutputMessages->ScrollToCaret();*/
 	}
 private: void PrintMessage2(System::String^ msg) {
-	/*TxtOutputMessages->Text += "frame: " +  myOpenCV->framePozicija.ToString() + "--->" +  DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
+	TxtOutputMessages->Text += "frame: " +  myOpenCV->framePozicija.ToString() + "--->" +  DateTime::Now.ToString("HH:mm:ss") + " ---> " + msg + "\r\n";
 	TxtOutputMessages->SelectionStart = TxtOutputMessages->TextLength;
-	TxtOutputMessages->ScrollToCaret();*/
+	TxtOutputMessages->ScrollToCaret();
 }
 	
 
@@ -456,7 +588,7 @@ private: System::Void BtnSeekVideo_Click(System::Object^  sender, System::EventA
 		
 
 			
-void DoNavigation(char * finalnaPoruka, int virtualId, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
+void CompileCmdMessage(char * finalnaPoruka, int virtualId, cv::Point currentPoint, int currentAngleOrientation, cv::Point todoTargetPoint) {
 
 	
 
@@ -557,7 +689,7 @@ private: System::Void timerForNavgation_Tick(System::Object^  sender, System::Ev
 				float currentAngleOrientation = robot->GetUgaoPravcaKretanja();
 
 				cv::Point todoTargetPoint = queueTargets->getSaPozicije(0)->point;
-				DoNavigation(finalnaPorukaChars, virtualId, currentPoint, currentAngleOrientation, todoTargetPoint);
+				CompileCmdMessage(finalnaPorukaChars, virtualId, currentPoint, currentAngleOrientation, todoTargetPoint);
 
 				/*timerForNavgation->Stop();
 				Sleep(50);
@@ -576,5 +708,79 @@ private: System::Void timerForNavgation_Tick(System::Object^  sender, System::Ev
 private: System::Void cmbComPort_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 
 }
+
+		 void pomjeriRobota(System::String^ cmd)
+		 {
+			 for (int i = 0; i < 7; i++)
+			 {
+				 SendSerialCommand(cmd);
+				 Sleep(100);
+			 }
+	}
+
+	void identifyRobots(System::String^ robotName, System::String^ msg, TextBox^ txtBox)
+	{
+		int ukupnoRobota = myOpenCV->robot_collector.Count();
+
+		cv::Point * positions1 = new cv::Point[ukupnoRobota];
+		cv::Point * positions2 = new cv::Point[ukupnoRobota];
+		double * differences = new double[ukupnoRobota];
+		TxtOutputMessages->Text += "---------------------------------\n";
+		PrintMessage2(robotName);
+		for (int i = 0; i < ukupnoRobota; i++)
+		{
+			Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
+			cv::Point pos1= robot->GetPozicijaNajnovijaFront()->point;
+			positions1[i] = pos1;			
+		}
+
+		pomjeriRobota(msg);
+		
+		for (int i = 0; i < ukupnoRobota; i++)
+		{
+			PrintMessage2("VR:" + i.ToString() + " <<<<<< ");
+
+			Robot* robot = myOpenCV->robot_collector.GetRobotByIndex(i);
+
+			cv::Point pos2 = robot->GetPozicijaNajnovijaFront()->point;
+			positions2[i] = pos2;
+
+			double d = MyMath::Udaljenost_DvijeTacke(positions2[i], positions1[i]);
+			differences[i] = d;
+			auto pos1 = positions1[i];
+
+			PrintMessage2(" pos1=" + pos1.x.ToString() + ", " + pos1.y.ToString() + "), pos2=" + pos2.x.ToString() + ", " + pos2.y.ToString() + ") " + " d=" + d.ToString());
+
+		}
+
+		int detectedVR = MyMath::GetMaxIndex(differences, ukupnoRobota, 5);
+		txtBox->Text = detectedVR.ToString();
+
+		Sleep(500);
+	}
+
+private: System::Void btnInitializeAll_Click(System::Object^  sender, System::EventArgs^  e) {
+	btnInitialize1_Click(nullptr, nullptr);
+	btnInitialize2_Click(nullptr, nullptr);
+	btnInitialize3_Click(nullptr, nullptr);
+	btnInitialize4_Click(nullptr, nullptr);
+}
+
+	private: System::Void btnInitialize1_Click(System::Object^  sender, System::EventArgs^  e) {
+		identifyRobots("R1x = ", "R1-100-100R2-001-001R3-001-001R4-001-001------", txtR1);
+	}
+
+	private: System::Void btnInitialize2_Click(System::Object^  sender, System::EventArgs^  e) {
+		identifyRobots("R2 mali = ", "R1-001-001R2-100-100R3-001-001R4-001-001------", txtR2);
+	}
+
+	private: System::Void btnInitialize3_Click(System::Object^  sender, System::EventArgs^  e) {
+		identifyRobots("R3 veliki = ", "R1-001-001R2-001-001R3-100-100R4-001-001------", txtR3);
+	}
+
+	private: System::Void btnInitialize4_Click(System::Object^  sender, System::EventArgs^  e) {
+		identifyRobots("R4x =", "R1-001-001R2-001-001R3-001-001R4-100-100------", txtR4);
+	}
+
 };
 }

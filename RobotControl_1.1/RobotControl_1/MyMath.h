@@ -6,6 +6,26 @@
 class MyMath
 {
 public:
+	static int GetMaxIndex(double array[], int arraySize, int tolerance)
+	{
+		double maxV = array[0];
+		int maxI = 0;
+		for (int i = 1; i < arraySize; i++)
+		{
+			if (array[i] > maxV )
+			{
+				maxV = array[i];
+				maxI = i;
+			}
+		}
+
+		if (maxV >= tolerance)
+			return maxI;
+		return -1;
+	}
+
+
+
 		static float Udaljenost_DvijeTacke(cv::Point a, cv::Point b)
 		{
 			float d = sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
