@@ -45,7 +45,7 @@ class Robot
 public:	
 	RedSekv<MotionStep*>* todoTargetPoints = new RedSekv<MotionStep*>();
 	//RedSekv<MoveActionMotor*>* todoActions = new RedSekv<MoveActionMotor*>();
-	AngleHistory* angleHistory = new AngleHistory(30);
+	//AngleHistory* angleHistory = new AngleHistory(30);
 	float Udaljenost_OdTackeFront(cv::Point p)
 	{
 		MotionStep* frame_point = this->GetPozicijaNajnovijaFront();
@@ -63,6 +63,32 @@ public:
 
 		return MyMath::Udaljenost_DvijeTacke(frame_point->point, p);
 	}
+
+	Lista<cv::Point>* PredictPath()
+	{
+		ListaPov<cv::Point> *result = new ListaPov<cv::Point>;
+
+		int velicina = motionHistoryFront->Count();
+		if (velicina == 0)
+			return result;
+
+		
+
+
+		for(int i=velicina-1; i>=0;i--)
+		{
+			cv::Point p = motionHistoryFront->GetOlderVersion(i)->point;
+			
+			result->Add(cv::Point(p.x , p.y ));
+		}
+
+		//ovdje ide for za predikciju po double exponential smoothing za jos 10 tacaka
+				
+
+		return result;
+		
+	}
+
 
 	Robot(int id, int frameId, int x, int y, cv::Scalar color, PointType pointType)
 	{
