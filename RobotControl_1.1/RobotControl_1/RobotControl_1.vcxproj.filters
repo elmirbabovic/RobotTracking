@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="common.cpp" />
+    <ClCompile Include="FormPictureBox.cpp" />
+    <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="MyOpenCV.h" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AngleHistory.h" />
+    <ClInclude Include="ATP\Cvor.h" />
+    <ClInclude Include="ATP\Lista.h" />
+    <ClInclude Include="ATP\ListaPov.h" />
+    <ClInclude Include="ATP\ListaSekv.h" />
+    <ClInclude Include="ATP\PrioritetniRed.h" />
+    <ClInclude Include="ATP\PrioritetniRedHeap.h" />
+    <ClInclude Include="ATP\PrioritetniRedPov.h" />
+    <ClInclude Include="ATP\PrioritetniRedSekv.h" />
+    <ClInclude Include="ATP\Red.h" />
+    <ClInclude Include="ATP\RedPov.h" />
+    <ClInclude Include="ATP\RedSekv.h" />
+    <ClInclude Include="ATP\Stek.h" />
+    <ClInclude Include="ATP\StekPov.h" />
+    <ClInclude Include="ATP\StekSekv.h" />
+    <ClInclude Include="ATP\UsporedbaGeneric.h" />
+    <ClInclude Include="CliHelper.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="FileTools.h" />
+    <ClInclude Include="FormPictureBox.h" />
+    <ClInclude Include="Navigation.h" />
+    <ClInclude Include="Nullable.h" />
+    <ClInclude Include="OpenCvHelper.h" />
+    <ClInclude Include="Robot.h" />
+    <ClInclude Include="MyForm.h" />
+    <ClInclude Include="MyMath.h" />
+    <ClInclude Include="RobotCollector.h" />
+    <ClInclude Include="TackbarValues.h" />
+    <ClInclude Include="MotionHistory.h" />
+    <ClInclude Include="double_smothing_ex.h">
+      <Filter>predict_algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="IPredictAlgorithm.h" />
+    <ClInclude Include="Model.h">
+      <Filter>predict_algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleExponentialSmoothingForLinearSeries.h">
+      <Filter>predict_algorithms</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\..\..\..\OpenCV\build\x64\vc15\lib\opencv_world343d.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormPictureBox.resx" />
+    <EmbeddedResource Include="MyForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="predict_algorithms">
+      <UniqueIdentifier>{a9a171d6-f2a5-411b-a1c0-964ed5fc2a06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

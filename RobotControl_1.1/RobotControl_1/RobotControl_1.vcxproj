@@ -167,10 +167,14 @@
     <ClInclude Include="ATP\UsporedbaGeneric.h" />
     <ClInclude Include="CliHelper.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="double_smothing_ex.h" />
     <ClInclude Include="FileTools.h" />
     <ClInclude Include="FormPictureBox.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="DoubleExponentialSmoothingForLinearSeries.h" />
+    <ClInclude Include="IPredictAlgorithm.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Navigation.h" />
     <ClInclude Include="Nullable.h" />
     <ClInclude Include="OpenCvHelper.h" />
